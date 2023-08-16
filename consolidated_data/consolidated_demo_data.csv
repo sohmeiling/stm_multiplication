@@ -1,0 +1,220 @@
+RecordedDate,participant,gender,nationality,ethnicity,handedness,eduLevel,employment,Medicalhistory,developmentHist,nativelanguage,ParentsEdu,income,dob,age
+3/8/2021 13:32,994,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,4/8/2002,19
+3/8/2021 13:40,997,Male,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,3/7/2000,21
+3/8/2021 16:17,1000,Female,Non-Malaysian,Indian,NA,NA,NA,NA,NA,NA,NA,NA,4/30/2001,20
+3/8/2021 16:24,9935,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,9/27/2002,19
+3/9/2021 12:42,998,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,9/15/2001,20
+3/9/2021 23:01,995,Female,Malaysian,Indian,NA,NA,NA,NA,NA,NA,NA,NA,6/18/2000,21
+3/22/2021 13:59,996,Male,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,11/27/2002,19
+3/26/2021 8:49,989,Female,Non-Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,4/1/2001,20
+3/26/2021 13:38,987,Female,Non-Malaysian,Indian,NA,NA,NA,NA,NA,NA,NA,NA,10/20/2001,20
+3/26/2021 19:36,990,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,3/18/2001,20
+3/26/2021 22:59,988,Male,Non-Malaysian,Eurasian,NA,NA,NA,NA,NA,NA,NA,NA,9/7/2001,20
+3/30/2021 9:31,991,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,11/28/2001,20
+4/4/2021 16:22,992,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,10/8/2001,20
+4/19/2021 13:13,980,Female,Malaysian,Malay,NA,NA,NA,NA,NA,NA,NA,NA,1/11/1999,22
+4/19/2021 16:09,982,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,11/28/1995,26
+4/19/2021 19:06,984,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,11/20/1999,22
+4/21/2021 21:11,976,Male,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,7/29/2000,21
+4/22/2021 11:56,974,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,3/28/1999,22
+4/22/2021 13:31,971,Female,Malaysian,Malay,NA,NA,NA,NA,NA,NA,NA,NA,6/4/1998,23
+4/22/2021 15:59,999,Female,Non-Malaysian,Indian,NA,NA,NA,NA,NA,NA,NA,NA,10/31/2000,21
+4/22/2021 16:19,969,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,6/11/2000,21
+4/22/2021 17:54,960,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,2/1/2000,21
+4/22/2021 20:13,934,Male,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,8/19/1995,26
+4/22/2021 20:32,963,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,11/18/1999,22
+4/22/2021 21:21,968,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,1/1/2001,20
+4/22/2021 21:35,961,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,7/17/2000,21
+4/22/2021 21:48,959,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,6/3/2000,21
+4/22/2021 22:13,950,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,2/4/1997,24
+4/22/2021 22:39,949,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,3/26/2000,21
+4/22/2021 22:59,957,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,4/3/2000,21
+4/22/2021 23:32,948,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,11/29/2000,21
+4/23/2021 10:19,983,Female,Malaysian,Malay,NA,NA,NA,NA,NA,NA,NA,NA,5/12/2001,20
+4/23/2021 11:08,952,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,8/30/2000,21
+4/23/2021 11:34,977,Male,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,7/6/2001,20
+4/23/2021 15:36,945,Female,Malaysian,Malay,NA,NA,NA,NA,NA,NA,NA,NA,5/27/2000,21
+4/23/2021 22:36,943,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,3/30/1995,26
+4/24/2021 0:03,942,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,9/26/1997,24
+4/24/2021 12:11,938,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,5/24/1998,23
+4/24/2021 13:27,996,Male,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,11/27/2002,19
+4/24/2021 17:01,932,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,9/18/1997,24
+4/24/2021 23:22,956,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,6/22/2001,20
+4/25/2021 0:24,941,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,5/28/2000,21
+4/25/2021 3:36,951,Female,Non-Malaysian,Malay,NA,NA,NA,NA,NA,NA,NA,NA,10/3/1996,25
+4/25/2021 9:55,928,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,12/29/1997,24
+4/25/2021 10:10,928,Female,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,12/29/1997,24
+4/26/2021 16:09,927,Female,Malaysian,Mixed,NA,NA,NA,NA,NA,NA,NA,NA,2/21/2000,21
+4/27/2021 11:22,965,Male,Malaysian,Chinese,NA,NA,NA,NA,NA,NA,NA,NA,7/21/2000,21
+4/27/2021 14:12,979,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,1/23/1999,22
+4/28/2021 0:30,917,Female,Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,3/23/1999,22
+4/28/2021 11:46,936,Female,Malaysian,Chinese,Left-handed,NA,NA,NA,NA,NA,NA,NA,3/8/2000,21
+4/28/2021 12:51,919,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,9/23/2000,21
+4/28/2021 16:14,916,Male,Non-Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,1/1/1994,27
+4/30/2021 14:59,986,Female,Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,7/16/2002,19
+5/2/2021 21:17,922,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,10/5/2000,21
+5/3/2021 14:22,914,Female,Malaysian,Malay,Left-handed,NA,NA,NA,NA,NA,NA,NA,1/24/1999,22
+5/4/2021 12:39,925,Female,Non-Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,8/7/2001,20
+5/5/2021 0:53,908,Male,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,1/11/1984,37
+5/5/2021 20:39,918,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,12/28/1994,27
+5/9/2021 23:49,920,Female,Malaysian,Indian,Right-handed,NA,NA,NA,NA,NA,NA,NA,9/25/1996,25
+5/11/2021 10:30,940,Female,Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,4/13/1998,23
+5/20/2021 0:30,929,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,4/27/2000,21
+5/20/2021 1:13,953,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,2/24/2000,21
+8/18/2021 13:49,901,Male,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,7/30/1994,27
+8/18/2021 14:34,904,Male,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,10/7/1995,26
+8/19/2021 21:10,895,Female,Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,3/29/1992,29
+8/23/2021 10:04,902,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,7/5/2002,19
+8/23/2021 11:31,897,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,4/7/1996,25
+8/23/2021 18:18,892,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,5/14/1995,26
+8/24/2021 16:01,888,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,11/29/2001,20
+8/24/2021 23:21,883,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,11/30/1999,22
+8/25/2021 19:27,882,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,5/27/2000,21
+8/26/2021 11:18,887,Female,Non-Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,8/10/1999,22
+8/26/2021 13:56,930,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,10/4/1996,25
+8/26/2021 14:12,954,Female,Non-Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,10/21/1998,23
+8/26/2021 16:18,931,Female,Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,7/30/1999,22
+8/27/2021 6:12,881,Female,Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,4/27/1999,22
+8/27/2021 20:54,889,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,3/29/1999,22
+8/27/2021 23:19,947,Female,Non-Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,6/23/1999,22
+8/27/2021 23:51,877,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,1/8/1998,23
+8/28/2021 17:52,876,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,11/23/2001,20
+8/29/2021 19:52,964,Female,Malaysian,Indian,Right-handed,NA,NA,NA,NA,NA,NA,NA,5/5/2000,21
+8/29/2021 21:34,875,Female,Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,4/11/2001,20
+8/30/2021 15:44,867,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,9/22/2000,21
+8/30/2021 16:02,871,Female,Malaysian,Indian,Right-handed,NA,NA,NA,NA,NA,NA,NA,5/19/1998,23
+8/30/2021 17:22,864,Female,Malaysian,Indian,Right-handed,NA,NA,NA,NA,NA,NA,NA,10/5/2001,20
+8/30/2021 22:11,863,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,12/12/2002,19
+8/31/2021 13:10,866,Female,Malaysian,Indian,Right-handed,NA,NA,NA,NA,NA,NA,NA,5/30/1999,22
+8/31/2021 22:00,885,Female,Malaysian,Chinese,Left-handed,NA,NA,NA,NA,NA,NA,NA,11/6/1997,24
+9/1/2021 1:58,865,Female,Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,11/15/1999,22
+9/1/2021 13:59,860,Female,Non-Malaysian,Indian,Ambidextrous,NA,NA,NA,NA,NA,NA,NA,7/31/2002,19
+9/1/2021 13:59,872,Female,Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,2/18/2001,20
+9/2/2021 6:30,869,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,9/11/2000,21
+9/2/2021 9:29,857,Female,Malaysian,Indian,Right-handed,NA,NA,NA,NA,NA,NA,NA,11/29/1996,25
+9/2/2021 13:32,859,Male,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,11/21/1995,26
+9/2/2021 22:47,896,Female,Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,3/30/1992,29
+9/3/2021 15:03,880,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,4/7/2000,21
+9/3/2021 16:29,855,Female,Non-Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,8/5/2002,19
+9/3/2021 20:23,854,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,2/1/1995,26
+9/6/2021 6:00,850,Female,Non-Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,7/5/1979,42
+9/6/2021 15:40,850,Male,Malaysian,Chinese,Left-handed,NA,NA,NA,NA,NA,NA,NA,5/20/2000,21
+9/7/2021 14:34,852,Male,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,9/11/1998,23
+9/8/2021 23:46,848,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,2/26/2002,19
+9/9/2021 13:50,843,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,9/23/2002,19
+9/9/2021 14:00,843,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,9/23/2002,19
+9/9/2021 15:05,843,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,9/23/2002,19
+9/9/2021 17:35,844,Female,Non-Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,6/30/2001,20
+9/9/2021 22:58,849,Female,Malaysian,Indian,Right-handed,NA,NA,NA,NA,NA,NA,NA,9/18/2002,19
+9/11/2021 16:32,841,Male,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,10/23/1999,22
+9/13/2021 17:45,856,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,7/5/2002,19
+9/16/2021 10:57,839,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,5/7/1995,26
+9/17/2021 12:24,840,Male,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,5/28/1998,23
+9/18/2021 10:34,846,Female,Malaysian,Malay,Right-handed,NA,NA,NA,NA,NA,NA,NA,11/24/2001,20
+9/19/2021 18:33,868,Female,Malaysian,Chinese,Right-handed,NA,NA,NA,NA,NA,NA,NA,12/18/2000,21
+1/11/2022 14:37,831,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,No,"RM 2,500 - RM 3,169",3/8/1999,23
+1/11/2022 18:25,831,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,No,"Less than RM 2,500",3/8/1999,23
+1/11/2022 18:37,831,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,No,"Less than RM 2,500",3/8/1999,23
+1/11/2022 22:40,827,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 8,700 - RM 10,959",1/2/1997,25
+1/12/2022 7:26,828,Female,Malaysian,Indian,Right,"Some college, no degree",Student,No,No,English,"Yes, father only","RM 10,960 - RM 15,039",2/27/1998,24
+1/12/2022 8:08,830,Male,Malaysian,Chinese,Left,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Cantonese,"Yes, father only","RM 3,170 - RM 3,969",5/17/1998,24
+1/12/2022 8:25,830,Male,Malaysian,Chinese,Left,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Cantonese,"Yes, father only","RM 3,970 - RM 4,849",5/17/1998,24
+1/12/2022 9:22,824,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Employed full time (40 or more hours per week),No,No,English,No,"RM 4,850 - RM 5,879",2/9/2000,22
+1/12/2022 9:40,825,Female,Malaysian,Chinese,Right,"Master's degree (e.g. MA, MS, MEd)",Employed full time (40 or more hours per week),No,No,Cantonese,"Yes, father only","RM 3,970 - RM 4,849",1/16/1989,33
+1/12/2022 11:07,832,Male,Malaysian,Chinese,Left,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 3,970 - RM 4,849",2/26/2000,22
+1/12/2022 23:46,823,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Employed part time (up to 39 hours per week),No,No,English,"Yes, father only","RM 5,880 - RM 7,099",9/20/1991,31
+1/13/2022 3:26,822,Female,Malaysian,Malay,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Bahasa Malaysia (Northern/Central/Southern accent),No,"Less than RM 2,500",1/4/1999,23
+1/13/2022 9:33,818,Female,Malaysian,Indian,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,English,"Yes, both parents","RM 15,039 or more",3/24/2000,22
+1/13/2022 10:24,819,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,No,"RM 5,880 - RM 7,099",2/12/1999,23
+1/13/2022 13:54,817,Female,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,Mandarin,No,"RM 4,850 - RM 5,879",2/12/1998,24
+1/13/2022 15:29,822,Female,Malaysian,Malay,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Bahasa Malaysia (Northern/Central/Southern accent),No,"Less than RM 2,500",1/4/1999,23
+1/14/2022 10:12,810,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 3,970 - RM 4,849",10/26/1999,23
+1/14/2022 10:18,810,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 3,970 - RM 4,849",10/26/1999,23
+1/14/2022 11:22,MS141221,Female,Non-Malaysian,Sudanese,Right,"Bachelor's degree (e.g. BA, BS)",Student,Yes,No,Others,"Yes, both parents","RM 15,039 or more",12/21/1998,24
+1/14/2022 11:48,813,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 4,850 - RM 5,879",1/16/2000,22
+1/14/2022 13:13,812,Female,Malaysian,Chinese,Left,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 7,110 - RM 8,699",11/10/1999,23
+1/14/2022 15:36,811,Female,Malaysian,Iban,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Bahasa Malaysia (Northern/Central/Southern accent),No,"RM 2,500 - RM 3,169",11/15/1996,26
+1/14/2022 16:25,820,Female,Malaysian,Chinese,Right,"Master's degree (e.g. MA, MS, MEd)",Student,No,No,English,"Yes, both parents","RM 8,700 - RM 10,959",9/15/1993,29
+1/14/2022 22:15,808,Female,Malaysian,Chinese,Left,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 4,850 - RM 5,879",4/8/2001,21
+1/15/2022 8:35,801,Female,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,Mandarin,"Yes, mother only","RM 8,700 - RM 10,959",1/1/2002,20
+1/15/2022 12:51,821,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 3,170 - RM 3,969",1/29/2000,22
+1/15/2022 14:05,795,Male,Malaysian,Chinese,Left,"Bachelor's degree (e.g. BA, BS)",Employed part time (up to 39 hours per week),No,No,English,No,"RM 2,500 - RM 3,169",8/30/1999,23
+1/15/2022 14:32,794,Male,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,"Yes, both parents","RM 8,700 - RM 10,959",2/1/1999,23
+1/15/2022 16:25,802,Female,Malaysian,Indian,Right,"Bachelor's degree (e.g. BA, BS)",Employed part time (up to 39 hours per week),No,No,English,"Yes, mother only","RM 10,960 - RM 15,039",9/26/1994,28
+1/15/2022 18:36,794,Male,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,"Yes, both parents","RM 8,700 - RM 10,959",2/1/1999,23
+1/15/2022 22:01,806,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Hokkien,No,"RM 15,039 or more",11/29/1997,25
+1/15/2022 22:43,796,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Cantonese,No,"RM 2,500 - RM 3,169",6/29/1999,23
+1/16/2022 1:20,790,Male,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,Mandarin,No,"RM 10,960 - RM 15,039",11/14/2000,22
+1/16/2022 9:22,793,Male,Malaysian,Bajau,Right,"Some college, no degree",Student,No,No,Mandarin,No,"Less than RM 2,500",10/2/2000,22
+1/16/2022 11:42,797,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 4,850 - RM 5,879",11/9/1999,23
+1/16/2022 11:50,797,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 4,850 - RM 5,879",11/9/1999,23
+1/16/2022 13:16,801,Female,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,Mandarin,"Yes, mother only","RM 10,960 - RM 15,039",1/1/2002,20
+1/16/2022 16:36,786,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 8,700 - RM 10,959",2/22/1999,23
+1/16/2022 17:14,814,Male,Malaysian,Malay,Right,"Bachelor's degree (e.g. BA, BS)",Employed part time (up to 39 hours per week),No,No,Bahasa Malaysia (Northern/Central/Southern accent),"Yes, father only","RM 7,110 - RM 8,699",1/21/1999,23
+1/16/2022 17:57,804,Female,Malaysian,Chinese,Left,"Some college, no degree",Student,No,No,Mandarin,"Yes, both parents","RM 15,039 or more",11/10/2000,22
+1/17/2022 9:27,789,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"Less than RM 2,500",4/17/1999,23
+1/17/2022 9:31,779,Male,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,Mandarin,No,"RM 3,170 - RM 3,969",2/5/1999,23
+1/17/2022 9:43,779,Male,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,Mandarin,No,"RM 3,170 - RM 3,969",2/5/1999,23
+1/17/2022 10:34,785,Female,Malaysian,Chinese,NA,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,"Yes, both parents","RM 8,700 - RM 10,959",12/3/2000,22
+1/17/2022 10:52,783,Female,Malaysian,Malay,Left,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Bahasa Malaysia (Northern/Central/Southern accent),"Yes, both parents","RM 5,880 - RM 7,099",4/13/1994,28
+1/17/2022 13:04,800,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,No,"RM 3,970 - RM 4,849",1/19/2000,22
+1/17/2022 19:28,815,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,"Yes, both parents","RM 10,960 - RM 15,039",9/27/2000,22
+1/17/2022 22:33,784,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Unemployed and currently looking for work,No,No,English,"Yes, mother only","RM 10,960 - RM 15,039",11/11/1998,24
+1/17/2022 22:58,BAC,Male,Malaysian,Malay,Right,"Bachelor's degree (e.g. BA, BS)",Employed part time (up to 39 hours per week),No,No,Bahasa Malaysia (Northern/Central/Southern accent),"Yes, father only","RM 7,110 - RM 8,699",NA/NA/NA,NA
+1/18/2022 0:50,782,Female,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,Mandarin,"Yes, father only","RM 15,039 or more",5/15/1999,23
+1/18/2022 11:15,773,Male,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,"Yes, both parents","RM 5,880 - RM 7,099",5/5/2001,21
+1/18/2022 11:43,763,Non-binary/ third gender,Malaysian,Chinese,Right,"Some college, no degree",Student,No,Yes,Mandarin,"Yes, father only","RM 10,960 - RM 15,039",10/10/2000,22
+1/18/2022 12:20,765,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,"Yes, father only","RM 15,039 or more",11/21/2001,21
+1/18/2022 13:09,767,Male,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,"Yes, both parents","RM 5,880 - RM 7,099",12/31/2000,22
+1/18/2022 13:35,758,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,No,"Less than RM 2,500",10/3/2002,20
+1/18/2022 13:42,782,Female,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,Mandarin,"Yes, father only","RM 15,039 or more",5/15/1999,23
+1/18/2022 14:11,775,Female,Malaysian,Chinese,Left,Less than a high school diploma,Student,No,No,Mandarin,"Yes, mother only","RM 8,700 - RM 10,959",3/14/2002,20
+1/18/2022 14:27,774,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 3,170 - RM 3,969",1/2/2001,21
+1/18/2022 14:28,762,Female,Malaysian,Kadazandusun,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Cantonese,No,"RM 4,850 - RM 5,879",4/15/2000,22
+1/18/2022 14:55,752,Female,Malaysian,Chinese,Right,"Associate degree (e.g. AA, AS)",Student,No,No,English,"Yes, father only","RM 5,880 - RM 7,099",9/6/2000,22
+1/18/2022 15:05,788,Female,Malaysian,Malay,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Bahasa Malaysia (Northern/Central/Southern accent),"Yes, both parents","RM 4,850 - RM 5,879",5/5/1998,24
+1/18/2022 15:11,809,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 3,170 - RM 3,969",12/23/2000,22
+1/18/2022 15:12,754,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Employed full time (40 or more hours per week),No,No,English,"Yes, both parents","RM 5,880 - RM 7,099",12/6/1995,27
+1/18/2022 16:28,753,Male,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 4,850 - RM 5,879",6/1/2000,22
+1/18/2022 17:05,772,Female,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,English,"Yes, both parents","RM 15,039 or more",12/20/2001,21
+1/18/2022 17:44,769,Female,Malaysian,Chinese,Left,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"Less than RM 2,500",10/7/2000,22
+1/18/2022 18:34,803,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 5,880 - RM 7,099",5/5/2000,22
+1/18/2022 19:35,764,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,Yes,No,Mandarin,No,"RM 2,500 - RM 3,169",6/19/2000,22
+1/18/2022 21:08,756,Female,Malaysian,Indian,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,English,No,"Less than RM 2,500",3/1/1998,24
+1/18/2022 21:31,770,Male,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,English,"Yes, both parents","RM 8,700 - RM 10,959",4/10/1998,24
+1/18/2022 21:35,751,Male,Malaysian,Chinese,Left,"Bachelor's degree (e.g. BA, BS)",Employed full time (40 or more hours per week),No,No,Mandarin,"Yes, father only","RM 8,700 - RM 10,959",11/7/1999,23
+1/18/2022 22:51,747,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 2,500 - RM 3,169",9/22/1999,23
+1/19/2022 0:59,777,Male,Malaysian,Chinese,Left,"Some college, no degree",Employed full time (40 or more hours per week),No,No,Mandarin,No,"Less than RM 2,500",10/10/1998,24
+1/19/2022 11:10,749,Female,Malaysian,Chinese,Right,Less than a high school diploma,Employed full time (40 or more hours per week),No,No,Mandarin,"Yes, father only","RM 2,500 - RM 3,169",11/1/1999,23
+1/19/2022 16:22,746,Female,Malaysian,Chinese,Right,Less than a high school diploma,Student,No,No,Mandarin,No,"Less than RM 2,500",4/9/2000,22
+1/19/2022 21:30,760,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,English,No,"Less than RM 2,500",6/7/1999,23
+1/19/2022 21:30,741,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,"Yes, mother only","RM 8,700 - RM 10,959",4/1/2002,20
+1/19/2022 21:42,742,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Self-employed,No,No,Mandarin,"Yes, both parents","RM 5,880 - RM 7,099",12/22/1999,23
+1/19/2022 22:03,748,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"Less than RM 2,500",4/30/2000,22
+1/19/2022 22:12,755,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Employed full time (40 or more hours per week),No,No,Mandarin,"Yes, both parents","RM 3,970 - RM 4,849",2/24/1997,25
+1/19/2022 22:24,778,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,"Yes, both parents","RM 3,970 - RM 4,849",2/15/2001,21
+1/19/2022 23:02,745,Female,Malaysian,Kadazandusun,Right,"Bachelor's degree (e.g. BA, BS)",Employed part time (up to 39 hours per week),No,No,English,No,"RM 4,850 - RM 5,879",3/28/1998,24
+1/19/2022 23:58,743,Female,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,English,"Yes, mother only","RM 8,700 - RM 10,959",9/19/2001,21
+1/20/2022 8:39,776,Female,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,English,"Yes, both parents","RM 10,960 - RM 15,039",7/1/2003,19
+1/20/2022 9:27,805,Female,Malaysian,Malay,Right,"Master's degree (e.g. MA, MS, MEd)",Employed full time (40 or more hours per week),No,No,Bahasa Malaysia (Northern/Central/Southern accent),"Yes, father only","RM 15,039 or more",5/5/1993,29
+1/20/2022 10:13,740,Female,Malaysian,Bidayuh,Right,"Some college, no degree",Employed part time (up to 39 hours per week),No,No,English,No,"RM 7,110 - RM 8,699",3/26/2002,20
+1/20/2022 10:33,761,Female,Malaysian,Malay,Right,High school degree or equivalent (e.g. GED),Student,No,No,Bahasa Malaysia (Northern/Central/Southern accent),"Yes, both parents","RM 10,960 - RM 15,039",10/25/2002,20
+1/20/2022 12:14,771,Female,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,English,"Yes, both parents","RM 4,850 - RM 5,879",8/2/2000,22
+1/20/2022 12:40,750,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,No,"RM 8,700 - RM 10,959",11/14/2000,22
+1/20/2022 18:43,757,Prefer not to say,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,"Yes, mother only","RM 4,850 - RM 5,879",8/25/2002,20
+1/20/2022 22:07,776,Female,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,English,"Yes, both parents","RM 15,039 or more",7/1/2003,19
+1/20/2022 23:10,739,Male,Malaysian,Chinese,Right,"Bachelor's degree (e.g. BA, BS)",Employed full time (40 or more hours per week),No,No,Mandarin,NA,"RM 3,170 - RM 3,969",4/13/1997,25
+1/21/2022 0:58,759,Female,Malaysian,Chinese,Left,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,No,"RM 7,110 - RM 8,699",11/16/2002,20
+1/22/2022 13:11,733,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,"Yes, mother only","RM 3,970 - RM 4,849",12/29/2003,19
+1/22/2022 13:19,738,Male,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,Mandarin,"Yes, mother only","RM 7,110 - RM 8,699",3/21/2001,21
+1/22/2022 14:27,795,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA/NA/NA,NA
+1/22/2022 20:37,730,Female,Malaysian,Chinese,Left,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Mandarin,No,"RM 5,880 - RM 7,099",8/14/2000,22
+1/22/2022 21:41,726,Female,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,Mandarin,"Yes, mother only","RM 10,960 - RM 15,039",1/3/2000,22
+1/22/2022 22:31,734,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,No,"RM 5,880 - RM 7,099",3/6/2002,20
+1/22/2022 23:47,816,Female,Malaysian,Chinese,Right,"Some college, no degree",Student,No,No,Cantonese,"Yes, mother only","RM 5,880 - RM 7,099",5/6/1999,23
+1/23/2022 0:35,723,Female,Malaysian,Melanau,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Others,No,"RM 2,500 - RM 3,169",2/3/1999,23
+1/23/2022 9:58,725,Female,Malaysian,Malay,Right,"Bachelor's degree (e.g. BA, BS)",Student,No,No,Bahasa Malaysia (Northern/Central/Southern accent),"Yes, both parents","RM 2,500 - RM 3,169",7/22/1999,23
+1/23/2022 13:08,808,Female,Malaysian,Chinese,Left,"Bachelor's degree (e.g. BA, BS)",Student,NA,NA,NA,NA,NA,4/8/2001,21
+1/23/2022 13:35,727,Male,Malaysian,Malay,Left,High school degree or equivalent (e.g. GED),Student,No,No,Bahasa Malaysia (Northern/Central/Southern accent),No,"RM 5,880 - RM 7,099",1/8/1999,23
+1/23/2022 13:58,787,Female,Non-Malaysian,Pakistani,Right,"Doctorate or professional degree (e.g. MD, DDS, PhD)",Employed full time (40 or more hours per week),No,No,Others,"Yes, father only","RM 5,880 - RM 7,099",8/21/1985,37
+1/23/2022 14:25,724,Female,Malaysian,Chinese,Right,High school degree or equivalent (e.g. GED),Student,No,No,Mandarin,No,"Less than RM 2,500",10/1/1999,23
