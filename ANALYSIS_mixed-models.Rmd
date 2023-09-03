@@ -1,0 +1,216 @@
+---
+title: "ANALYIS_mixed-models"
+output: html_document
+date: "2023-08-16"
+---
+
+# Import library
+```{r}
+
+library(tidyverse)
+library(lme4)
+library(dplyr)
+library(lmerTest)
+library(emmeans)
+library(merTools)
+library(broom)
+library(boot)
+library(glmmTMB) #for zero-inflation models
+```
+
+# Load datasets
+
+```{r}
+
+mult_df <- readr::read_csv("consolidated_data/cleaned_mult_data.csv")
+vpt_df <- readr::read_csv("consolidated_data/cleaned_vpt_data.csv")
+digit_df <- readr::read_csv("consolidated_data/cleaned_digit-span-wais_data.csv")
+typing_df <- readr::read_csv("consolidated_data/cleaned_typing_data.csv")
+interference_score <- readr::read_csv("consolidated_data/stim_inteference_score.csv")
+
+# Combine data frames using left_join
+combined_df <- mult_df %>%
+  left_join(vpt_df, by = "participant") %>%
+  left_join(digit_df, by = "participant") %>%
+  left_join(typing_df, by = "participant") %>% 
+  left_join(interference_score, by = "problem") 
+
+# Save the combined data frame to a CSV file
+write_csv(combined_df, "combined_data.csv")
+
+# Read the CSV file and assign it to combined_rt_df
+missing_task_df <- readr::read_csv("combined_data.csv") %>% 
+  filter(multiplyCorr == 1) %>% 
+  mutate(log10_rt = log10(multiplyRT)) %>%  # Log10 transformed the RT
+  group_by(participant) %>%
+  summarize_all(~ sum(is.na(.))) %>% 
+  filter_at(vars(-participant), any_vars(. != 0))
+
+# Missing task data - participants 685, 749, 783, 947, 971, 979, 987 were excluded
+excluded_participants <- missing_task_df$participant
+
+# Load df
+combined_df <- read_csv("combined_data.csv") %>% 
+  # Exclude participants with missing task data
+  filter(!(participant %in% excluded_participants)) %>% 
+  # Apply log10 transformation to reaction times
+  mutate(log10_rt = log10(multiplyRT))
+
+```
+
+# Removing incorrect trials from the multiplication task
+
+```{r model_1}
+
+combined_rt_df <- readr::read_csv("combined_data.csv") %>% 
+  # Filter out incorrect trials
+  filter(multiplyCorr == 1) %>% 
+  # Exclude participants with missing task data
+  filter(!(participant %in% excluded_participants)) %>% 
+  # Apply log10 transformation to reaction times
+  mutate(log10_rt = log10(multiplyRT))
+
+```
+
+## Model 1a (typing speed not controlled)
+
+```{r}
+# Fit the mixed effects model without typing speed
+model_no_typing <- lmer(log10_rt ~ max_digitspan + mean_blocks + (1 | participant), data = combined_rt_df)
+
+# Summarize the model results
+summary_no_typing <- summary(model_no_typing)
+
+# Extract relevant information
+fixed_effects <- summary_no_typing$coefficients[, "Estimate"]
+log10_fixed_effects <- summary_no_typing$coefficients[, "Estimate"]
+original_fixed_effects <- 10^log10_fixed_effects  # Exponentiate log10 estimates
+se <- summary_no_typing$coefficients[, "Std. Error"]
+t_values <- summary_no_typing$coefficients[, "t value"]
+p_values <-summary_no_typing$coefficients[, "Pr(>|t|)"]
+
+# Create a data frame
+results_mod_no_typing_df <- data.frame(
+  Estimates_RT = fixed_effects,
+  Estimates_Log10 = log10_fixed_effects,
+  Estimates_Original = original_fixed_effects,
+  Standard_Error = se,
+  t_value = t_values,
+  p_value = p_values
+)
+
+# Export the data frame to a CSV file
+write.csv(results_mod_no_typing_df, "mixed_effects_mod_no_typing_results.csv", row.names = FALSE)
+```
+
+# Model 1b (control for typing speed)
+
+
+```{r}
+# Run the mixed effects model for Research Question 1
+model_typing_control <- lmer(log10_rt ~ max_digitspan + mean_blocks + median_RT + (1 | participant), data = combined_rt_df)
+
+# Get the summary with p-values using lmerTest
+summary_typing_control <- summary(model_typing_control)
+
+# Extract relevant information
+fixed_effects <- summary_typing_control$coefficients[, "Estimate"]
+log10_fixed_effects <- summary_typing_control$coefficients[, "Estimate"]
+original_fixed_effects <- 10^log10_fixed_effects  # Exponentiate log10 estimates
+se <- summary_typing_control$coefficients[, "Std. Error"]
+t_values <- summary_typing_control$coefficients[, "t value"]
+p_values <- summary_typing_control$coefficients[, "Pr(>|t|)"]
+
+# Create a data frame
+results_typing_control <- data.frame(
+  Estimates_RT = fixed_effects,
+  Estimates_Log10 = log10_fixed_effects,
+  Estimates_Original = original_fixed_effects,
+  Standard_Error = se,
+  t_value = t_values,
+  p_value = p_values
+)
+
+# Export the data frame to a CSV file
+write.csv(results_typing_control, "mixed_effects_typing_control_results.csv", row.names = FALSE)
+
+```
+
+
+# Model 2
+
+Research Question 2: Does individuals' verbal and visual STM abilities that influences accuracy in the multiplication production task?
+
+```{r}
+
+# Standardize predictors
+combined_df$max_digitspan <- scale(combined_df$max_digitspan)
+combined_df$mean_blocks <- scale(combined_df$mean_blocks)
+
+# Run the mixed effects model with rescaled predictors
+control_params <- glmerControl(optimizer = 'bobyqa', optCtrl = list(maxfun = 50000))
+model_acc_no_typing <- glmer(multiplyCorr ~ max_digitspan + mean_blocks + (1 | participant),
+                                data = combined_df,
+                                family = binomial,
+                                control = control_params)
+
+# Summarize the model
+model_summary <- tidy(model_acc_no_typing)
+
+
+```
+
+
+## Research Question 3
+How does the individuals' verbal and visual STM abilities impact their reaction time in the multiplication production task, considering control for problem size, interference score, and typing speed?
+
+```{r}
+
+# Filter out tie problems
+combined_rt_no_tie_df <- combined_rt_df[combined_rt_df$OperandType != "tie", ]
+
+# Recode productType into -1 (smallProd) and 1 (largeProd)
+combined_rt_no_tie_df$productType <- ifelse(combined_rt_no_tie_df$productType == "smallProd", -1, 1)
+
+# Scale the interference_score to grand mean
+grand_mean <- mean(combined_rt_no_tie_df$interference_score)
+combined_rt_no_tie_df$interference_score <- scale(combined_rt_no_tie_df$interference_score, center = grand_mean, scale = FALSE)
+
+# Run the mixed effects model
+model_interaction <- lmer(log10_rt ~ productType * interference_score + median_RT + (1 | participant),
+                          data = combined_rt_no_tie_df)
+
+# Summarize the results
+summary(model_interaction)
+
+```
+
+# Random slope models
+
+```{r}
+
+# Run the mixed effects model with random slopes
+control_params <- lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 50000))
+model_rt_random_slope <- lmer(log10_rt ~ productType * interference_score + median_RT + (1 + productType + interference_score | participant),
+                               data = combined_rt_no_tie_df,
+                               control = control_params)
+
+# Summarize the results
+summary(model_rt_random_slope)
+```
+
+# Random slope models (maximal model)
+
+```{r}
+
+# Run the mixed effects model with random slopes
+control_params <- lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 50000))
+model_rt_max_model <- lmer(log10_rt ~ productType * interference_score + + median_RT + 
+                             max_digitspan + mean_blocks + (1 + productType + interference_score | participant),
+                               data = combined_rt_no_tie_df,
+                               control = control_params)
+
+# Summarize the results
+summary(model_rt_max_model)
+```
+
