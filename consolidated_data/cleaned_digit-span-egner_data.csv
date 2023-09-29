@@ -1,5 +1,6 @@
-participant,max_digitspan,digitspan_type
+participant,max_span,digitspan_type
 1000,7,Egner
+500,5,Egner
 651,6,Egner
 652,6,Egner
 653,4,Egner
@@ -49,8 +50,10 @@ participant,max_digitspan,digitspan_type
 726,5,Egner
 727,6,Egner
 730,7,Egner
+732,5,Egner
 733,7,Egner
 734,4,Egner
+736,9,Egner
 738,9,Egner
 739,7,Egner
 740,8,Egner
@@ -67,6 +70,7 @@ participant,max_digitspan,digitspan_type
 753,9,Egner
 754,8,Egner
 755,7,Egner
+756,9,Egner
 758,7,Egner
 759,9,Egner
 760,7,Egner
@@ -82,6 +86,7 @@ participant,max_digitspan,digitspan_type
 772,8,Egner
 773,7,Egner
 775,8,Egner
+776,9,Egner
 777,7,Egner
 778,3,Egner
 779,8,Egner
@@ -91,6 +96,7 @@ participant,max_digitspan,digitspan_type
 786,9,Egner
 789,9,Egner
 790,9,Egner
+792,7,Egner
 793,9,Egner
 794,9,Egner
 795,9,Egner
@@ -120,6 +126,7 @@ participant,max_digitspan,digitspan_type
 825,6,Egner
 827,9,Egner
 828,9,Egner
+829,7,Egner
 830,7,Egner
 831,9,Egner
 832,9,Egner

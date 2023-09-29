@@ -1,0 +1,87 @@
+---
+title: "demo_wrangling_codes"
+output: html_document
+date: "2023-09-19"
+---
+
+# Demographics data wrangling
+This document contains the codes used to clean up the demographics data downloaded from qualtrics.
+
+```{r}
+library(tidyverse)
+
+# Read the Excel file with participant details
+participant_details <- read_csv("demographics_raw_data/raw/participant_details_pnc.csv")
+```
+
+
+```{r}
+library(lubridate)
+
+data <- read_csv("demographics_raw_data/raw/stm_demo_part1.csv") %>%
+  slice(-1, -2) %>% 
+  select(EndDate, name, dob_1, dob_2, dob_3, email, 
+         gender, nationality, handedness) %>% 
+  filter(!rowSums(is.na(.)) > 0) %>% 
+  unite(dob, dob_3, dob_1, dob_2, sep = "-") %>%
+  mutate(dob = parse_date(dob, format = "%Y-%B-%d"),
+         EndDate = ymd_hms(EndDate)) %>%
+  mutate(EndDate = as.Date(EndDate)) %>%  # This line extracts only the date part
+  mutate(age = interval(dob, EndDate) %>% 
+           as.period() %>% 
+           as.numeric("years"))
+
+
+```
+
+
+```{r}
+# Perform the left join
+data <- data %>%
+  left_join(participant_details, by = c("email" = "Email"))
+
+# Save the resulting data frame as a CSV file
+# write_csv(data, "demographics_raw_data/demoP1_data.csv")
+# The data file, demoP1_data.csv was cross-checked for participants without id
+
+
+```
+
+```{r}
+data2 <- read_csv("demographics_raw_data/raw/stm_demo_part2.csv") %>%
+  slice(-1, -2) %>% 
+  select(EndDate, participant, dob_1, dob_2, dob_3, 
+         gender, nationality, handedness) %>% 
+  filter(!rowSums(is.na(.)) > 0) %>% 
+  unite(dob, dob_3, dob_1, dob_2, sep = "-") %>%
+  mutate(dob = parse_date(dob, format = "%Y-%B-%d"),
+         EndDate = dmy_hm(EndDate)) %>%
+  mutate(age = interval(dob, EndDate) %>% 
+           as.period() %>% 
+           as.numeric("years")) %>% 
+  select(gender, nationality, handedness, age, participant) %>% 
+  mutate(participant = as.character(participant))
+
+```
+
+
+# Final cleanup
+
+```{r}
+combined_data <- bind_rows(data, data2) %>% 
+  mutate(handedness = ifelse(handedness %in% c("Right-handed", "Right"), "Right-handed",
+                            ifelse(handedness %in% c("Left-handed", "Left"), "Left-handed",
+                                   handedness))) %>% 
+  mutate(handedness = ifelse(handedness == "-99", NA, handedness)) %>% 
+  distinct(participant, .keep_all = TRUE) 
+
+```
+
+
+```{r}
+# combined data frame named "data_combined"
+write_csv(combined_data, "consolidated_data/combined_demo_data.csv")
+```
+
+
+

@@ -1,0 +1,282 @@
+---
+title: "RT and Accuracy Models"
+output: html_document
+date: "2023-09-26"
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(emmeans)
+library(sjPlot)
+library(performance)
+library(broom.mixed)
+```
+
+# Load data
+```{r}
+
+col_types_spec <- cols(
+  participant = col_factor(),
+  median_RT = col_double(),
+  verbal_span_mean = col_double(),
+  visual_span_mean = col_double(),
+  interference_score = col_double(),
+  multiplyRT = col_double(),
+  multiplyCorr = col_double(),
+  productType = col_factor(),
+  OperandType = col_factor(),
+  problem = col_character()
+)
+
+combined_rt_df <- readr::read_csv("combined_mult_data.csv", col_types = col_types_spec) %>% 
+  # Filter out incorrect trials
+  filter(multiplyCorr == 1) %>% 
+  # Apply log10 transformation to reaction times
+  mutate(log10_rt = log10(multiplyRT)) %>% 
+  # Apply effect coding/deviation coding
+  mutate(problem_size = ifelse(productType == "smallProd", -1, 1)) %>% 
+  mutate(problem_size = as.factor(problem_size))
+
+combined_acc_df <- readr::read_csv("combined_mult_data.csv", col_types = col_types_spec) %>% 
+  # Apply log10 transformation to reaction times
+  mutate(log10_rt = log10(multiplyRT)) %>% 
+  # Apply effect coding/deviation coding
+  mutate(problem_size = ifelse(productType == "smallProd", -1, 1)) %>% 
+  mutate(problem_size = as.factor(problem_size))
+```
+
+# Centering the predictors for verbal and visual span means
+
+```{r}
+
+# using datawizard package, datawizard::standardize()
+
+combined_rt_centered <- combined_rt_df %>% 
+  mutate(participant = as.factor(participant)) %>% 
+  mutate(problem_size = as.factor(problem_size)) %>% 
+  mutate(interference_score_c = datawizard::center(interference_score),
+        verbal_span_c = datawizard::center(verbal_span_mean),
+         visual_span_c = datawizard::center(visual_span_mean),
+         typing_RT_c = datawizard::center(median_RT))
+
+combined_acc_centered <- combined_acc_df %>% 
+  mutate(participant = as.factor(participant)) %>% 
+  mutate(problem_size = as.factor(problem_size)) %>% 
+  mutate(interference_score_c = datawizard::center(interference_score),
+         verbal_span_c = datawizard::center(verbal_span_mean),
+         visual_span_c = datawizard::center(visual_span_mean),
+         typing_RT_c = datawizard::center(median_RT))
+
+# Assuming 'multiplyCorr' is a numeric vector
+combined_rt_centered$multiplyCorr <- factor(combined_rt_centered$multiplyCorr, 
+                                            levels = c(0, 1), 
+                                            labels = c("Wrong", "Correct"))
+
+combined_acc_centered$multiplyCorr <- factor(combined_acc_centered$multiplyCorr, 
+                                             levels = c(0, 1), 
+                                             labels = c("Wrong", "Correct"))
+
+```
+
+## The five models for RT
+See the 06_Analysis_mixed-models.Rmd for details.
+
+Typing is the covariate.
+
+# Model 1 - problem features - size
+```{r}
+# Fit the model
+m_1a <- lmer(log10_rt ~ typing_RT_c + problem_size  +
+               (problem_size + interference_score_c | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+summary(m_1a)
+print(m_1a, correlation = TRUE)
+```
+
+# Model 2 - problem feature - size and interference
+```{r}
+m_2a <- lmer(log10_rt ~ typing_RT_c + problem_size + interference_score_c +
+               (problem_size + interference_score_c | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+```
+
+# Model 3 - problem features and verbal STM
+```{r}
+m_3a <- lmer(log10_rt ~ typing_RT_c + problem_size + interference_score_c +
+               verbal_span_c + 
+               (problem_size + interference_score_c | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+```
+
+# Model 4 - problem features and verbal, visual STM
+```{r}
+m_4a <- lmer(log10_rt ~ typing_RT_c + problem_size + interference_score_c +
+               verbal_span_c + visual_span_c +
+               (problem_size + interference_score_c | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+```
+
+# Model 5 - Interactions
+```{r}
+m_5a <- lmer(log10_rt ~ typing_RT_c + problem_size * interference_score_c *
+               verbal_span_c * visual_span_c +
+               (problem_size + interference_score_c | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+summary(m_5a)
+```
+
+
+```{r}
+tab_model(m_1a, m_2a, m_3a, m_4a, m_5a)
+```
+## Note
+
+The problem size and participants are coded as factors. The problem size is numerically recoded to small (-1) and large (1), as such the comparison of problem size is with the baseline of small problems. 
+
+## Interpretation of models
+The marginal R-squared considers only the variance of the fixed effects and indicates how much of the model’s variance is explained by the fixed effects part only. The conditional R-squared takes both the fixed and random effects into account and indicates how much of the model’s variance is explained by the “complete” model. Larger R-squared is better. 
+
+Like R-squared, the ICC provides information on the explained variance and can be interpreted as “the proportion of the variance explained by the grouping structure in the population” (Hox 2010).
+
+## Random structure
+There is no gold standard about how to deal with singularity and which random-effects specification to choose. The current consensus is to "keep it maximal", i.e. fit the most complex model consistent with the experimental design, removing only terms required to allow a non-singular fit (Barr et al. 2013). 
+
+Note the different meaning between singularity and convergence: singularity indicates an issue with the "true" best estimate, i.e. whether the maximum likelihood estimation for the variance-covariance matrix of the random effects is positive definite or only semi-definite. Convergence is a question of whether we can assume that the numerical optimization has worked correctly or not.
+
+# Likelihood ratio test
+```{r}
+
+anova(m_1a, type = "III") # Type III tests
+anova(m_2a, type = "III")
+anova(m_3a, type = "III")
+anova(m_4a, type = "III")
+anova(m_5a, type = "III")
+```
+
+# Compare performance
+```{r}
+performance::compare_performance(m_1a, m_2a, m_3a, m_4a, m_5a, rank = TRUE)
+```
+
+Best model is m_5a
+
+### ----------------ACCURACY ---------------------------###
+
+## The five models for Accuracy
+See 06 - rmd for the selection of best random structures
+
+Typing is covariate
+
+## Model 1 - size
+
+```{r}
+
+m_acc_1a <- glmer(multiplyCorr ~ typing_RT_c + problem_size + 
+               (interference_score_c || participant) + 
+                 (1 | problem), 
+             data = combined_acc_centered,
+             family = binomial(link = "logit"),
+             control=glmerControl(optimizer="bobyqa", 
+                                  optCtrl=list(maxfun=20000)))
+```
+
+## Model 2 - size + interference
+
+```{r}
+
+m_acc_2a <- glmer(multiplyCorr ~ typing_RT_c + problem_size + interference_score_c +
+               (interference_score_c || participant) + 
+                 (1 | problem), 
+             data = combined_acc_centered,
+             family = binomial(link = "logit"),
+             control=glmerControl(optimizer="bobyqa", 
+                                  optCtrl=list(maxfun=20000)))
+```
+
+## Model 3 - size + interference + verbal STM
+
+```{r}
+
+m_acc_3a <- glmer(multiplyCorr ~ typing_RT_c + problem_size + interference_score_c +
+                    verbal_span_c +
+               (interference_score_c || participant) + 
+                 (1 | problem), 
+             data = combined_acc_centered,
+             family = binomial(link = "logit"),
+             control=glmerControl(optimizer="bobyqa", 
+                                  optCtrl=list(maxfun=20000)))
+```
+
+## Model 4 - size + interference + verbal STM + visual STM
+
+```{r}
+
+m_acc_4a <- glmer(multiplyCorr ~ typing_RT_c + problem_size + interference_score_c +
+                    verbal_span_c + visual_span_c +
+               (interference_score_c || participant) + 
+                 (1 | problem), 
+             data = combined_acc_centered,
+             family = binomial(link = "logit"),
+             control=glmerControl(optimizer="bobyqa", 
+                                  optCtrl=list(maxfun=20000)))
+```
+
+
+## Model 5 - interactions
+
+```{r}
+
+m_acc_5a <- glmer(multiplyCorr ~ typing_RT_c + problem_size * interference_score_c *
+                    verbal_span_c * visual_span_c +
+               (interference_score_c || participant) + 
+                 (1 | problem), 
+             data = combined_acc_centered,
+             family = binomial(link = "logit"),
+             control=glmerControl(optimizer="bobyqa", 
+                                  optCtrl=list(maxfun=20000)))
+
+
+```
+
+# Likelihood test
+
+```{r}
+anova(m_acc_1a)
+anova(m_acc_2a)
+anova(m_acc_3a)
+anova(m_acc_4a)
+anova(m_acc_5a)
+```
+
+# Summary
+```{r}
+tab_model(m_acc_1a, m_acc_2a, m_acc_3a, m_acc_4a, m_acc_5a)
+```
+
+# Compare model performance
+
+```{r}
+performance::compare_performance(m_acc_1a, m_acc_2a, m_acc_3a, m_acc_4a, m_acc_5a, rank = TRUE)
+```
+

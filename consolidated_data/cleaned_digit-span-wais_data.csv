@@ -1,5 +1,6 @@
-participant,max_digitspan,digitspan_type
+participant,max_span,digitspan_type
 1000,7,WAIS
+500,5,WAIS
 651,6,WAIS
 652,5,WAIS
 653,3,WAIS
@@ -49,8 +50,10 @@ participant,max_digitspan,digitspan_type
 726,6,WAIS
 727,6,WAIS
 730,9,WAIS
+732,4,WAIS
 733,7,WAIS
 734,4,WAIS
+736,8,WAIS
 738,9,WAIS
 739,7,WAIS
 740,7,WAIS
@@ -67,6 +70,7 @@ participant,max_digitspan,digitspan_type
 753,9,WAIS
 754,8,WAIS
 755,7,WAIS
+756,9,WAIS
 758,6,WAIS
 759,6,WAIS
 760,3,WAIS
@@ -82,6 +86,7 @@ participant,max_digitspan,digitspan_type
 772,8,WAIS
 773,5,WAIS
 775,7,WAIS
+776,9,WAIS
 777,9,WAIS
 778,7,WAIS
 779,7,WAIS
@@ -91,6 +96,7 @@ participant,max_digitspan,digitspan_type
 786,8,WAIS
 789,9,WAIS
 790,9,WAIS
+792,6,WAIS
 793,8,WAIS
 794,9,WAIS
 795,7,WAIS
@@ -121,6 +127,7 @@ participant,max_digitspan,digitspan_type
 825,6,WAIS
 827,9,WAIS
 828,6,WAIS
+829,8,WAIS
 830,9,WAIS
 831,9,WAIS
 832,9,WAIS

@@ -1,0 +1,67 @@
+EndDate,name,dob,email,gender,nationality,handedness,age,No.x,ParticipantID.x,Completed online Task.x,Name.x,HP.x,CommMethod.x,GroupAllocation.x,No.y,ParticipantID.y,Completed online Task.y,Name.y,HP.y,CommMethod.y,GroupAllocation.y
+27/04/2021,Ng Yee Shuen,23/01/1999,ericang990123@gmail.com,Female,Malaysian,Right-handed,22.2609514,22,979,NO,Ng Yee Shuen (Erica),017 - 4106 915,Email,BAC,22,979,NO,Ng Yee Shuen (Erica),017 - 4106 915,Email,BAC
+28/04/2021,ANISSA ANIS,23/03/1999,niesaaniz992@gmail.com,Female,Malaysian,Right-handed,22.09702259,84,917,Yes,ANISSA ANIS,011-39193298,Email,CBA,84,917,Yes,ANISSA ANIS,011-39193298,Email,CBA
+28/04/2021,Lee Xin Yi,08/03/2000,hpyxl1@nottingham.edu.my,Female,Malaysian,Left-handed,21.13809035,65,936,Yes,Lee Xin Yi,123731227,Email,CAB,65,936,Yes,Lee Xin Yi,123731227,Email,CAB
+28/04/2021,SANDRA NGIAO,23/09/2000,sandrangiao2000@gmail.com,Female,Malaysian,Right-handed,20.59702259,82,919,Yes,Sandra Ngiao,163744355,Email,BAC,82,919,Yes,Sandra Ngiao,163744355,Email,BAC
+28/04/2021,Saleem,01/01/1994,saleem.anees@hotmail.com,Male,Non-Malaysian,Right-handed,27.32392197,85,916,Yes,Mohamad Saleem Anis,182137541,Email,ABC,85,916,Yes,Mohamad Saleem Anis,182137541,Email,ABC
+30/04/2021,Azra,16/07/2002,hpyan2@nottingham.edu.my,Female,Malaysian,Right-handed,18.78832991,15,986,Yes,Azra Azzahra Binti Nordarzy,012-911 9632,Whatsapp,BCA,15,986,Yes,Azra Azzahra Binti Nordarzy,012-911 9632,Whatsapp,BCA
+02/05/2021,Kimberly Man Min Xi,05/10/2000,hfykm2@nottingham.edu.my,Female,Malaysian,Right-handed,20.57392197,79,922,Yes,Kimberly Man Min Xi,123184812,Whatsapp,ABC,79,922,Yes,Kimberly Man Min Xi,123184812,Whatsapp,ABC
+03/05/2021,FARAH WAHIDAH,24/01/1999,farhwahi24@gmail.com,Female,Malaysian,Left-handed,22.27464066,NA,914,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+04/05/2021,sara ahmed hosny,07/08/2001,hfysa4@nottingham.edu.my,Female,Non-Malaysian,Right-handed,19.74058864,NA,925,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+05/05/2021,Calvin,11/01/1984,20200038@student.iumw.edu.my,Male,Malaysian,Right-handed,37.31570842,97,908,Yes,CALVIN TAN,192789770,Email,ABC,97,908,Yes,CALVIN TAN,192789770,Email,ABC
+05/05/2021,Kristy Chong,28/12/1994,kristychong94@gmail.com,Female,Malaysian,Right-handed,26.35249829,83,918,Yes,Kristy Chong,122358818,Whatsapp,CAB,83,918,Yes,Kristy Chong,122358818,Whatsapp,CAB
+09/05/2021,Tapisha Kaur,25/09/1996,thar0036@student.monash.edu,Female,Malaysian,Right-handed,24.62166324,81,920,Yes,Tapisha Kaur,162123414,Whatsapp,BCA,81,920,Yes,Tapisha Kaur,162123414,Whatsapp,BCA
+11/05/2021,DALINA PUTERI BINTI ARIPIN,13/04/1998,aripindalina@gmail.com,Female,Malaysian,Right-handed,23.07665982,NA,940,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+20/05/2021,Tan Eng Ning,27/04/2000,hfyet2@nottingham.edu.my,Female,Malaysian,Right-handed,21.06297057,72,929,NA,Tan Eng Ning,165661702,Whatsapp,CBA,72,929,NA,Tan Eng Ning,165661702,Whatsapp,CBA
+20/05/2021,Loh Shi Yun,24/02/2000,hfysl4@nottingha.edu.my,Female,Malaysian,Right-handed,21.23785079,NA,953,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+18/08/2021,Yap Yoong Ruey,30/07/1994,yoongruey.yap@sd.taylors.edu.my,Male,Malaysian,Right-handed,27.05201916,100,901,NA,Yoong Ruey,Contact via email,Email,BAC,100,901,NA,Yoong Ruey,Contact via email,Email,BAC
+18/08/2021,Benjamin Tan De Wei,07/10/1995,benjamintdw-wv17@student.tarc.edu.my,Male,Malaysian,Right-handed,25.86344969,93,904,NA,Benjamin Tan De Wei,162152567,NA,BCA,93,904,NA,Benjamin Tan De Wei,162152567,NA,BCA
+19/08/2021,Nuraini Zainal,29/03/1992,nabilahzainal@gmail.com,Female,Malaysian,Right-handed,29.3908282,106,895,Yes,Nuraini Zainal,60122093045,Email,BAC,106,895,Yes,Nuraini Zainal,60122093045,Email,BAC
+23/08/2021,Chan Jia Wei,05/07/2002,hfyjc9@nottingham.edu.my,Female,Malaysian,Right-handed,19.13261465,99,902,Yes,Chan Jia Wei,16349683,Email,BCA,99,902,Yes,Chan Jia Wei,16349683,Email,BCA
+23/08/2021,Tan Jiun Ting,07/04/1996,jiun.ting@yahoo.com,Female,Malaysian,Right-handed,25.37713895,104,897,Yes,Tan Jiun Ting,187604770,Whatsapp,ACB,104,897,Yes,Tan Jiun Ting,187604770,Whatsapp,ACB
+23/08/2021,Jesley How,14/05/1995,jesleyjl@gmail.com,Female,Malaysian,Right-handed,26.27464066,NA,892,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+24/08/2021,Hoi Jia Xuan,29/11/2001,JRN2004427@xmu.edu.my,Female,Malaysian,Right-handed,19.73785079,113,888,NA,Hoi Jia Xuan,102524790,Whatsapp,CAB,113,888,NA,Hoi Jia Xuan,102524790,Whatsapp,CAB
+24/08/2021,Angelrene Goh,30/11/1999,1001747178@ucsiuniversity.edu.my,Female,Malaysian,Right-handed,21.73511294,NA,883,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+25/08/2021,Sheryl,27/05/2000,17106386@imail.sunway.edu.my,Female,Malaysian,Right-handed,21.24606434,119,882,yes,Sheryl Ng Jia Hui,102208251,Whatsapp,CAB,119,882,yes,Sheryl Ng Jia Hui,102208251,Whatsapp,CAB
+26/08/2021,Michelle,10/08/1999,michellesleep10@gmail.com,Female,Non-Malaysian,Right-handed,22.04380561,NA,731,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+26/08/2021,Chu Shean Shean,04/10/1996,shean212@gmail.com,Female,Malaysian,Right-handed,24.89356605,71,930,Yes,Chu Shean Shean,122869326,Whatsapp,CAB,71,930,Yes,Chu Shean Shean,122869326,Whatsapp,CAB
+26/08/2021,Meefa Ibrahim,21/10/1998,hfymi1@nottingham.edu.my,Female,Non-Malaysian,Right-handed,22.84702259,47,954,Yes,Meefa Ibrahim,60142606145,Whatsapp,CAB,47,954,Yes,Meefa Ibrahim,60142606145,Whatsapp,CAB
+26/08/2021,Nur Aimi Farhani Binti Mohamad Ramzan,30/07/1999,aimifarhani@gmail.com,Female,Malaysian,Right-handed,22.07392197,70,931,Yes,Nur Aimi Farhani binti Mohamad Ramzan,196627200,Whatsapp,BAC,70,931,Yes,Nur Aimi Farhani binti Mohamad Ramzan,196627200,Whatsapp,BAC
+27/08/2021,Amira Nurdiini Rosli,27/04/1999,sfyar2@nottingham.edu.my,Female,Malaysian,Right-handed,22.33333333,120,881,yes,Amira Nurdiini Rosli,104000244,Email,CBA,120,881,yes,Amira Nurdiini Rosli,104000244,Email,CBA
+27/08/2021,Wong Ying Huan,29/03/1999,yinghuan99@gmail.com,Female,Malaysian,Right-handed,22.41273101,112,889,Yes,Wong Ying Huan,127075108,Email,BAC,112,889,Yes,Wong Ying Huan,127075108,Email,BAC
+27/08/2021,Areej,23/06/1999,areejbasit99@hotmail.com,Female,Non-Malaysian,Right-handed,22.17761807,54,947,NA,Areej,60176082815,Whatsapp,CBA,54,947,NA,Areej,60176082815,Whatsapp,CBA
+27/08/2021,Hooi May Zheng,08/01/1998,zhengzoey98@gmail.com,Female,Malaysian,Right-handed,23.6353525,124,877,Yes,Hooi May Zheng (zoey),169651825,Whatsapp,BAC,124,877,Yes,Hooi May Zheng (zoey),169651825,Whatsapp,BAC
+28/08/2021,Lim Shu Hui,23/11/2001,sfysl2@nottingham.edu.my,Female,Malaysian,Right-handed,19.76368925,125,876,Yes,Lim Shu Hui (Mellanie),125795970,Whatsapp,CAB,125,876,Yes,Lim Shu Hui (Mellanie),125795970,Whatsapp,CAB
+29/08/2021,Asthajothi Ariwalagan,05/05/2000,hfyaa3@nottingham.edu.my,Female,Malaysian,Right-handed,21.31570842,37,964,yes,Asthajothi Ariwalagan,016-3152 661,Whatsapp,ABC,37,964,yes,Asthajothi Ariwalagan,016-3152 661,Whatsapp,ABC
+29/08/2021,ALYA SARA,11/04/2001,alyasaramahmud@yahoo.com,Female,Malaysian,Right-handed,20.38261465,NA,875,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+30/08/2021,Le Yi Ku,22/09/2000,sfylk1@nottingham.edu.my,Female,Malaysian,Right-handed,20.93856947,134,867,Yes,Le Yi Ku,163185403,Email,ACB,134,867,Yes,Le Yi Ku,163185403,Email,ACB
+30/08/2021,Geerthanaa Santhiran,19/05/1998,sfygs1@nottingham.edu.my,Female,Malaysian,Right-handed,23.28011636,130,871,Yes,Geerthanaa Santhiran,133453519,Email,BAC,130,871,Yes,Geerthanaa Santhiran,133453519,Email,BAC
+30/08/2021,Laega Darsheni Kumareson,05/10/2001,laegadarsheni@gmail.com,Female,Malaysian,Right-handed,19.9017796,NA,864,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+30/08/2021,Wong Chien Chien,12/12/2002,sbycw1@nottingham.edu.my,Female,Malaysian,Right-handed,18.71594798,138,863,Yes,Wong Chien Chien,172824610,Whatsapp,CBA,138,863,Yes,Wong Chien Chien,172824610,Whatsapp,CBA
+31/08/2021,Nusha Rengasamy,30/05/1999,sbynr1@nottingham.edu.my,Female,Malaysian,Right-handed,22.25273785,135,866,Yes,Nusha,197199937,Whatsapp,BCA,135,866,Yes,Nusha,197199937,Whatsapp,BCA
+31/08/2021,Kueh Jia Jing,06/11/1997,jiajing_611@hotmail.com,Female,Malaysian,Left-handed,23.81844627,NA,885,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+01/09/2021,Salma Izzati Mohamed Jagkeira,15/11/1999,sfysm1@gmail.com,Female,Malaysian,Right-handed,21.79654346,NA,865,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+01/09/2021,Advitiya Jaggi,31/07/2002,ssyaj1@nottingham.edu.my,Female,Non-Malaysian,Ambidextrous,19.08607118,141,860,NA,Advitiya Jaggi,+65 8727 6104,Email,BCA,141,860,NA,Advitiya Jaggi,+65 8727 6104,Email,BCA
+01/09/2021,Nasreen Hannah Binti Shamsul Muhardzi,18/02/2001,sfyns4@nottingham.edu.my,Female,Malaysian,Right-handed,20.53832991,129,872,NA,Nasreen Hannah Binti Shamsul Muhardzi,122920247,Whatsapp,BCA,129,872,NA,Nasreen Hannah Binti Shamsul Muhardzi,122920247,Whatsapp,BCA
+02/09/2021,Tan Jit See,11/09/2000,sbyjt1@nottingham.edu.my,Female,Malaysian,Right-handed,20.97689938,NA,869,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+02/09/2021,Harani Sandanasamy,29/11/1996,sfyhs1@nottingham.edu.my,Female,Malaysian,Right-handed,24.7609514,144,857,Yes,Harani Sandanasamy,127775725,Whatsapp,CBA,144,857,Yes,Harani Sandanasamy,127775725,Whatsapp,CBA
+02/09/2021,Allen Chee Jie Ein,21/11/1995,allen.cje@hotmail.com,Male,Malaysian,Right-handed,25.78285421,NA,859,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+02/09/2021,Syazana Ridzwan,30/03/1992,ninasyazana@gmail.com,Female,Malaysian,Right-handed,29.42488022,105,896,Yes,Syazana,132268615,Whatsapp,BCA,105,896,Yes,Syazana,132268615,Whatsapp,BCA
+03/09/2021,Queenie Tiong Wei Ting,07/04/2000,queenietiong0407@gmail.com,Female,Malaysian,Right-handed,21.4072553,NA,880,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+03/09/2021,Ho Se Nie @ Sabrina,05/08/2002,sabrinah2214@hotmail.com,Female,Non-Malaysian,Right-handed,19.07939767,146,855,Yes,Ho Se Nie @ Sabrina,6737188810,Whatsapp,ACB,146,855,Yes,Ho Se Nie @ Sabrina,6737188810,Whatsapp,ACB
+03/09/2021,Ying Xian,01/02/1995,ved.smiley@gmail.com,Female,Malaysian,Right-handed,26.58880903,147,854,Yes,Ying Xian,60126296526,Whatsapp,BCA,147,854,Yes,Ying Xian,60126296526,Whatsapp,BCA
+06/09/2021,Roula,05/07/1979,sbxra7@nottingham.edu.my,Female,Non-Malaysian,Right-handed,42.16940452,301,700,yes,Roula Ali ALShelli,9.66563E+11,Whatsapp,ABC,301,700,yes,Roula Ali ALShelli,9.66563E+11,Whatsapp,ABC
+06/09/2021,FAITH FOO,20/05/2000,foofaith01@gmail.com,Male,Malaysian,Left-handed,21.29654346,151,850,Yes,FAITH FOO,175727949,Email,ABC,151,850,Yes,FAITH FOO,175727949,Email,ABC
+07/09/2021,Ethan Ross Chin,11/09/1998,ethanross@me.com,Male,Malaysian,Right-handed,22.99058864,149,852,NA,Ethan Ross Chin,178507477,Email,CAB,149,852,NA,Ethan Ross Chin,178507477,Email,CAB
+08/09/2021,LIM LE XIAN,26/02/2002,AlexianLeona2002@gmail.com,Female,Malaysian,Right-handed,19.53559206,153,848,NA,Lim Le Xian,126828550,Whatsapp,BCA,153,848,NA,Lim Le Xian,126828550,Whatsapp,BCA
+09/09/2021,Chong Jo Lynn,23/09/2002,jolynn48@gmail.com,Female,Malaysian,Right-handed,18.96321013,158,843,yes,Chong Jo Lynn,016 9213995,Email,ACB,158,843,yes,Chong Jo Lynn,016 9213995,Email,ACB
+09/09/2021,Chong Jo Lynn,23/09/2002,jolynn48@gmail.com,Female,Malaysian,Right-handed,18.96321013,158,843,yes,Chong Jo Lynn,016 9213995,Email,ACB,158,843,yes,Chong Jo Lynn,016 9213995,Email,ACB
+09/09/2021,Chong Jo Lynn,23/09/2002,jolynn48@gmail.com,Female,Malaysian,Right-handed,18.96321013,158,843,yes,Chong Jo Lynn,016 9213995,Email,ACB,158,843,yes,Chong Jo Lynn,016 9213995,Email,ACB
+09/09/2021,Lingkan Carissa,30/06/2001,ssylw2@nottingham.edu.my,Female,Non-Malaysian,Right-handed,20.19404517,157,844,yes,Lingkan Carissa,60182453406,Whatsapp,ABC,157,844,yes,Lingkan Carissa,60182453406,Whatsapp,ABC
+09/09/2021,Kushmita Anand,18/09/2002,kushmitaanand@gmail.com,Female,Malaysian,Right-handed,18.97689938,152,849,NA,Kushmita Anand,016 9390527,Email,ACB,152,849,NA,Kushmita Anand,016 9390527,Email,ACB
+11/09/2021,Loh Onn Kein,23/10/1999,L.O.K123@hotmail.co.uk,Male,Malaysian,Right-handed,21.8853525,160,841,NA,Loh Onn Kein,NA,Email,BAC,160,841,NA,Loh Onn Kein,NA,Email,BAC
+13/09/2021,Isabel Wong Chien Rou,05/07/2002,ssyiw1@nottingham.edu.my,Female,Malaysian,Right-handed,19.18856947,145,856,Yes,Isabel Wong Chien Rou,127759397,Whatsapp,ABC,145,856,Yes,Isabel Wong Chien Rou,127759397,Whatsapp,ABC
+16/09/2021,Rynnie Son,07/05/1995,rynnieson@gmail.com,Female,Malaysian,Right-handed,26.35797399,162,839,NA,Rynnie Son,177703936,Email,CBA,162,839,NA,Rynnie Son,177703936,Email,CBA
+17/09/2021,Bong Wei Le Jeremy,28/05/1998,sfywb1@nottingham.edu.my,Male,Malaysian,Right-handed,23.30475702,161,840,NA,Bong Wei Le Jeremy,196544362,Email,CAB,161,840,NA,Bong Wei Le Jeremy,196544362,Email,CAB
+18/09/2021,Amelia Diyana Binti Mohd Azlan,24/11/2001,amydazlan@gmail.com,Female,Malaysian,Right-handed,19.81844627,155,846,NA,Amelia Diyana Binti Mohd Azlan,104501124,Whatsapp,CAB,155,846,NA,Amelia Diyana Binti Mohd Azlan,104501124,Whatsapp,CAB
+19/09/2021,YEOH SHU WEI,18/12/2000,sfysy1@nottingham.edu.my,Female,Malaysian,Right-handed,20.75273785,133,868,NA,Yeoh Shu Wei,164639600,Whatsapp,ABC,133,868,NA,Yeoh Shu Wei,164639600,Whatsapp,ABC

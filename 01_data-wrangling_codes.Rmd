@@ -1,0 +1,271 @@
+---
+title: "data-wrangling_codes"
+output: html_document
+date: "2023-08-16"
+---
+
+# Data wrangling
+
+## Typing task
+
+- Remove all the fast (<0.25s) and slow (> 5s) trials
+
+```{r}
+library(tidyverse)
+
+typing_df <- read_csv("consolidated_data/consolidated_typing_data.csv", 
+                      col_types = cols(group = col_character(),
+                                       typedNumber = col_character(),
+                                       typingRT = col_double(),
+                                       answerCorr = col_double(),
+                                       participant = col_character())) %>%
+  filter(typingRT >= 0.25 & typingRT <= 5) %>% 
+  group_by(participant) %>%
+  summarize(median_RT = median(typingRT),
+            mean_RT = mean(typingRT),
+            num_correct_trials = sum(answerCorr == 1, na.rm = TRUE),
+            perc_accuracy = num_correct_trials / 28 * 100) 
+```
+
+
+```{r}
+# Save the cleaned data
+write_csv(typing_df, "consolidated_data/cleaned_typing_data.csv")
+  
+```
+
+## Multiplication production task
+
+```{r}
+# Define column types based on the message
+col_types <- cols(
+  problem = col_factor(),
+  OperandType = col_factor(),
+  productType = col_factor(),
+  group = col_character(),
+  typedAnswer = col_character(),
+  multiplyRT = col_double(),
+  multiplyCorr = col_double(),
+  participant = col_character()
+)
+
+mult_ACC <- read_csv("consolidated_data/consolidated_mult_data.csv", 
+                    col_types = col_types) %>% 
+  filter(multiplyRT <= 10) %>% # remove extreme RT
+  filter(multiplyRT >= 0.25) 
+
+mult_RT <- read_csv("consolidated_data/consolidated_mult_data.csv", 
+                    col_types = col_types) %>% 
+  filter(multiplyCorr == 1) %>% 
+  filter(multiplyRT <= 10) %>% # remove extreme RT
+  filter(multiplyRT >= 0.25) 
+
+# Calculate the trials for each participant
+n_trials_mult <- mult_ACC %>% 
+  group_by(participant) %>% 
+  summarize(n = n()) 
+
+rt_extreme <- mult_ACC %>% 
+  filter(multiplyRT <= 10) %>% 
+  filter(multiplyRT >= 0.25)
+
+stats_accuracy <- mult_ACC %>% 
+  filter(multiplyCorr == 1) %>% 
+  group_by(participant) %>% 
+  summarize(n = n(),
+            mean_mult_RT = mean(multiplyRT),
+            medium_mult_RT = median(multiplyRT),
+            perc_accuracy_mult = n()/60*100) 
+```
+
+
+```{r}
+# Save the cleaned data
+write_csv(mult_ACC, "consolidated_data/cleaned_mult-acc_data.csv")
+write_csv(stats_accuracy, "consolidated_data/cleaned_mult-summary.csv")
+write_csv(mult_RT, "consolidated_data/cleaned_mult_data.csv")
+write_csv(mult_RT, "consolidated_data/cleaned_mult-RT_data.csv")  
+```
+
+
+## Digit span task
+
+```{r}
+col_types <- cols(
+  digitSpan = col_character(),
+  digits_audio = col_character(),
+  EgnerDSrt = col_double(),
+  EgnerDSscore = col_double(),
+  group = col_character(),
+  participant = col_character()
+)
+
+egner_span_df <- read_csv("consolidated_data/consolidated_digit-span-egner_data.csv", 
+                    col_types = col_types) %>% 
+  filter(EgnerDSscore == 1) %>% 
+  filter(!is.na(digitSpan)) %>% 
+  group_by(participant) %>%
+  summarize(max_span = max(digitSpan)) %>% 
+  mutate(digitspan_type = "Egner") 
+```
+
+
+```{r}
+# Save the cleaned data
+write_csv(egner_span_df, "consolidated_data/cleaned_digit-span-egner_data.csv") 
+```
+
+
+```{r}
+col_types <- cols(
+  digitSpanWAIS = col_character(),
+  WAISDSresponse = col_character(),
+  WAISDSrt = col_double(),
+  WAISDSscore = col_double(),
+  group = col_character(),
+  participant = col_character()
+)
+
+wais_span_df <- read_csv("consolidated_data/consolidated_digit-span-wais_data.csv", 
+                    col_types = col_types) %>% 
+  filter(WAISDSscore == 1) %>% 
+  filter(!is.na(digitSpanWAIS)) %>% 
+  group_by(participant) %>%
+  summarize(max_span = max(digitSpanWAIS)) %>% 
+  mutate(digitspan_type = "WAIS") 
+```
+
+
+```{r}
+# Save the cleaned data
+write_csv(wais_span_df, "consolidated_data/cleaned_digit-span-wais_data.csv") 
+```
+
+# Combined digit span tasks in two format (wide and long)
+
+```{r}
+# Combined digit span tasks (long)
+
+combined_ds <- bind_rows(wais_span_df, egner_span_df) %>% 
+    mutate(max_span = as.numeric(max_span)) 
+```
+
+
+```{r}
+write_csv(combined_ds, "consolidated_data/cleaned_digit-span-combined_long_data.csv")
+```
+
+
+```{r}
+# Combined digit span tasks (wide)
+combined_ds <- bind_rows(wais_span_df, egner_span_df) %>% 
+    mutate(max_span = as.numeric(max_span))  %>% 
+  pivot_wider(
+    names_from = digitspan_type,
+    values_from = max_span,
+    names_prefix = "verbal_span_"
+  ) %>% 
+    mutate(verbal_span_wais = as.numeric(verbal_span_WAIS),  # Ensure columns are treated as numeric
+         verbal_span_egner = as.numeric(verbal_span_Egner)) %>%
+    dplyr::select(participant, verbal_span_wais, verbal_span_egner) %>% 
+  mutate(verbal_span_mean = (verbal_span_wais + verbal_span_egner)/2)
+```
+
+
+```{r}
+write_csv(combined_ds, "consolidated_data/cleaned_digit-span-combined_wide_data.csv")
+```
+
+
+## Visual Pattern task
+
+```{r}
+col_types <- cols(
+  vptCorrect = col_character(),
+  noOfBlocks = col_character(),
+  group = col_character(),
+  participant = col_character()
+)
+
+vpt_df <- read_csv("consolidated_data/consolidated_vpt_data.csv", 
+                    col_types = col_types) %>% 
+  filter(vptCorrect == "TRUE") %>%
+  group_by(participant) %>%
+  slice_tail(n = 3) %>% 
+  summarize(mean_blocks = mean(as.numeric(noOfBlocks)))
+
+# Highest block span (two out of three correct trials in each block)
+vpt_max <- read_csv("consolidated_data/consolidated_vpt_data.csv", 
+                   col_types = col_types) %>%
+  filter(vptCorrect == "TRUE") %>%
+  group_by(participant, noOfBlocks) %>%
+  filter(sum(vptCorrect == "TRUE") >= 2) %>%
+  ungroup() %>% 
+  group_by(participant) %>%
+  summarise(max_vpt_span = max(noOfBlocks))
+
+vpt_df <- vpt_df %>%
+  left_join(vpt_max, by = "participant") 
+```
+
+
+```{r}
+# Save the cleaned data
+write_csv(vpt_df, "consolidated_data/cleaned_vpt_data.csv") 
+```
+
+## Demographics data for all participants
+
+```{r}
+
+demo_df <- read_csv("consolidated_data/combined_demo_data.csv") %>% 
+  mutate(handedness = recode(handedness,
+    "Right-handed" = "Right-handed",
+    "Right" = "Right-handed",
+    "Left-handed" = "Left-handed",
+    "Left" = "Left-handed"
+  )) %>% 
+  dplyr::select(-dob)
+
+```
+
+## Task dataset for all participants
+
+```{r}
+
+typing_df <- read_csv("consolidated_data/cleaned_typing_data.csv")
+mult_summary_df <- read_csv("consolidated_data/cleaned_mult-summary.csv")
+verbal_stm_df <- read_csv("consolidated_data/cleaned_digit-span-combined_wide_data.csv") 
+visual_stm_df <- read_csv("consolidated_data/cleaned_vpt_data.csv") 
+
+```
+
+# Combined dataset
+
+```{r}
+combined_tasks <- typing_df %>% 
+  inner_join(verbal_stm_df, by = 'participant') %>% 
+  inner_join(visual_stm_df, by = 'participant') %>% 
+  inner_join(mult_summary_df, by = 'participant') %>% 
+  filter(!is.na(verbal_span_mean))
+
+# Check for missing/NA cells in the entire data frame
+any_missing <- any(is.na(combined_tasks))
+
+# Check for missing/NA cells for each participant individually
+participants_with_missing <- combined_tasks %>%
+  group_by(participant) %>%
+  summarise(has_missing = any(is.na(.)))
+```
+
+
+```{r}
+# save the combined data
+write_csv(combined_tasks, "combined_tasks.csv") 
+```
+Removing na in typing task reduces the n of participant from 240 -236
+removing na in verbal span task (digit span) reduces the participant from 236 to 232.
+
+Final sample is 232 (removed 8 participants for incomplete tasks)
+
+
