@@ -6,24 +6,230 @@ date: "2023-09-19"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
 ```
 
-## R Markdown
+## Correlations for all the tasks
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Dataset
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
 
-```{r cars}
-summary(cars)
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+### Load dataset
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+# n is number of correct responses
+## RCS is number of correct responses / average reaction time
+combined_df <- read_csv("combined_tasks.csv") %>% 
+  mutate (rcs_score = n/mean_mult_RT) %>% 
+  mutate(fluency_group = ifelse(rcs_score <= quantile(rcs_score, 0.5), "Low", "High")) 
+
+
+
+interference_score <- read_csv("consolidated_data/stim_inteference_score.csv")
+
+mult_rt <- read_csv("consolidated_data/cleaned_mult-acc_data.csv")  %>% 
+  inner_join(combined_df, by = 'participant') %>% 
+  dplyr::select(participant, multiplyCorr, multiplyRT,
+                problem, productType, 
+                median_RT, perc_accuracy,
+                verbal_span_mean, mean_blocks,
+                medium_mult_RT, perc_accuracy_mult, fluency_group) %>% 
+  left_join(interference_score, by = 'problem') 
+
+# Save the combined data frame to a CSV file
+write_csv(mult_rt, "combined_mult_data.csv")
+  
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# t-test for Multiplication, Typing, Verbal, Visual
+
+```{r}
+# T-test for 'multiplication task - RT'
+ttest_mult <- t.test(mean_mult_RT ~ fluency_group, data = combined_df)
+
+# T-test for 'multiplication task - Accuracy'
+ttest_mult_n <- t.test(n ~ fluency_group, data = combined_df)
+
+# T-test for 'typing task'
+ttest_typing <- t.test(median_RT ~ fluency_group, data = combined_df)
+
+# T-test for 'verbal span'
+ttest_verbal <- t.test(verbal_span_mean ~ fluency_group, data = combined_df)
+
+# T-test for 'visual span'
+ttest_visual <- t.test(mean_blocks ~ fluency_group, data = combined_df)
+
+
+print(ttest_mult)
+print(ttest_mult_n)
+## Group differences in multiplication tasks
+mult_ttest <- combined_df %>% 
+  group_by(fluency_group) %>% 
+  dplyr::summarize(mult_mean = mean(mean_mult_RT),
+            mult_sd = sd(mean_mult_RT),
+            acc_mean = mean(n),
+            acc_sd = sd(n))
+
+# Print the results
+print(ttest_typing)
+# Calculate mean and SD for variable1
+combined_df_typing <- combined_df %>% 
+  group_by(fluency_group) %>% 
+  dplyr::summarize(n = n(),
+            fluency_mean = mean(median_RT),
+            fluency_sd = sd(median_RT))
+
+
+print(ttest_verbal)
+combined_df_verbal <- combined_df %>% 
+  group_by(fluency_group) %>% 
+  dplyr::summarize(fluency_mean = mean(verbal_span_mean),
+            fluency_sd = sd(verbal_span_mean))
+
+print(ttest_visual)
+combined_df_visual <- combined_df %>% 
+  group_by(fluency_group) %>% 
+  dplyr::summarize(fluency_mean = mean(mean_blocks),
+            fluency_sd = sd(mean_blocks))
+
+```
+
+
+
+# Correlation
+
+```{r message=FALSE}
+
+combined_corr_df <- read_csv("combined_tasks.csv") %>% 
+  dplyr::select(participant,
+    median_RT, 
+    perc_accuracy,
+    verbal_span_mean, mean_blocks,
+    medium_mult_RT, 
+    perc_accuracy_mult) %>% 
+  distinct(participant, .keep_all = TRUE) %>% 
+  select(-participant)
+```
+
+## Correlation matrix
+
+```{r}
+library("Hmisc")
+library("corrplot")
+
+# Impute missing values in the "age" column with the mean
+#combined_corr_df$age[is.na(combined_corr_df$age)] <- mean(combined_corr_df$age, na.rm = TRUE)
+
+# Calculate correlation coefficients and p-values
+mydata.rcorr <- rcorr(as.matrix(combined_corr_df))
+
+# Extract coefficient matrix and p-value matrix
+correlation_matrix <- mydata.rcorr$r
+p_value_matrix <- mydata.rcorr$P
+
+# Calculate correlation coefficients
+correlation_matrix <- cor(as.matrix(combined_corr_df), method = "pearson")
+
+# Save the correlation matrix to a CSV file
+write.csv(correlation_matrix, "EDA_output/correlation_matrix.csv")
+
+# Save the p-value matrix to a CSV file
+write.csv(p_value_matrix, "EDA_output/p_value_matrix.csv")
+
+
+```
+
+## Partial correlation
+
+```{r}
+
+library(ppcor)
+
+partial_corr_df <- read_csv("combined_tasks.csv") %>% 
+  dplyr::select(participant,
+    median_RT, 
+    verbal_span_mean, mean_blocks,
+    medium_mult_RT, 
+    perc_accuracy_mult) %>% 
+  distinct(participant, .keep_all = TRUE) %>% 
+  dplyr::select(-participant)
+
+
+# Calculate partial correlations
+partial_corr_verbal <- pcor.test(partial_corr_df$verbal_span_mean, 
+                                 partial_corr_df$medium_mult_RT, 
+                                 partial_corr_df$median_RT,
+                                 method = "pearson")
+
+partial_corr_visual <- pcor.test(partial_corr_df$mean_blocks, 
+                                 partial_corr_df$medium_mult_RT, 
+                                 partial_corr_df$median_RT,
+                                 method = "pearson")
+
+# Convert the matrix to a data frame
+partial_corr_df <- as.data.frame(partial_corr_verbal)
+
+```
+
+
+
+### Correlation for multiplication tasks
+
+```{r message=FALSE}
+
+corr_problem_feature <- read_csv("combined_mult_data.csv") %>% 
+  filter(multiplyCorr == 1) %>% 
+  dplyr::select(productType, interference_score, multiplyRT)  %>% 
+  mutate(log10_rt = log10(multiplyRT)) %>% 
+  rename(problem_size = productType) %>% 
+  mutate(problem_size = ifelse(problem_size == "smallProd", -1, 1)) 
+  
+# Calculate correlation coefficients
+correlation_matrix_prob <- cor(as.matrix(corr_problem_feature), method = "pearson")
+correlation_matrix_prob
+
+# Calculate correlation coefficients and p-values
+prob.rcorr <- rcorr(as.matrix(corr_problem_feature))
+# Extract coefficient matrix and p-value matrix
+correlation_prob <- prob.rcorr$r
+p_value_prob <- prob.rcorr$P
+# Save the correlation matrix to a CSV file
+write.csv(correlation_prob, "EDA_output/correlation_prob.csv")
+# Save the p-value matrix to a CSV file
+write.csv(p_value_prob, "EDA_output/p_value_prob.csv")
+
+
+corrplot::cor.mtest(corr_problem_feature)
+```
+
+## --------------------ADDITIONAL CORRELATION ANALYSIS -------------------
+### Additional correlation test
+
+```{r}
+
+# problem size and interference
+#problem_size_numeric = as.numeric(combined_rt_centered$problem_size)
+#correlation_test <- cor.test(problem_size_numeric, combined_rt_centered$interference_score_z, 
+ #                            method = "welch")
+#print(correlation_test)
+
+# problem size and log10_rt
+#size_rt_corr_test <- cor.test(problem_size_numeric, combined_rt_centered$log10_rt, method = "pearson")
+#print(size_rt_corr_test)
+
+# interference and log10_rt
+#int_rt_corr_test <- cor.test(combined_rt_centered$interference_score_z, combined_rt_centered$log10_rt, method = "pearson")
+#print(int_rt_corr_test)
+
+```
+
+
+
+
+

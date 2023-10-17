@@ -14,6 +14,11 @@ library(emmeans)
 library(sjPlot)
 library(performance)
 library(broom.mixed)
+library(ggeffects)
+
+theme_set(theme_bw(base_size = 15) + 
+            theme(legend.position="bottom", 
+                  panel.grid.major.x = element_blank()))
 
 ```
 
@@ -27,47 +32,31 @@ demo_df <- read_csv("consolidated_data/combined_demo_data.csv") %>%
   mutate(participant = as.character(participant))
 
 # Typing, verbal & visual STM
-combined_tasks <- read_csv("combined_tasks.csv") %>%
+combined_tasks <- read_csv("combined_mult_data.csv") %>%
   mutate(participant = as.character(participant)) %>% 
   # Rename "mean_blocks" column to "visual_span_mean"
-  rename(visual_span_mean = mean_blocks) %>%
-  # Select specific columns
-  select(participant, median_RT, verbal_span_mean, visual_span_mean, medium_mult_RT) 
+  rename(visual_span_mean = mean_blocks) 
 
 # List of participants & save
 participant_df <- data.frame(participant = combined_tasks$participant)
-write.csv(participant_df, "consolidated_data/participant_list.csv", row.names = FALSE)
+# write.csv(participant_df, "consolidated_data/participant_list.csv", row.names = FALSE)
 
-# Multiplication and OTHER tasks
-interference_score <- read_csv("consolidated_data/stim_inteference_score.csv")
-
-# Multiplication with RT or accuracy as response
-mult_df <- read_csv("consolidated_data/cleaned_mult-acc_data.csv") %>%
-  # Ensure "participant" column is character type
-  mutate(participant = as.character(participant)) %>%
-  # Perform an inner join with "interference_score" by the "problem" column
-  inner_join(interference_score, by = 'problem')
 
 ```
 
 # Combined tasks + multiplication + demographics datasets
 
-```{r}
-# Inner join the two data frames based on the "participant" column
-result_df <- mult_df %>%
-  inner_join(combined_tasks, by = 'participant') 
+```{r message=FALSE}
 
 # Group by participant and calculate the number of rows per participant
-result_summary <- result_df %>%
+result_summary <- combined_tasks %>%
   group_by(participant) %>%
-  summarize(number_of_rows = n())
-
-# Save the combined data frame to a CSV file
-# write_csv(result_df, "combined_mult_data.csv")
+  dplyr::summarize(number_of_rows = n())
 
 # Read the CSV file and assign it to combined_rt_df
 ## Check again if this dataset has excluded participants who didn't complete digit span, typing, vpt
 missing_task_df <- readr::read_csv("combined_mult_data.csv") %>% 
+  rename(visual_span_mean = mean_blocks) %>% 
   filter(multiplyCorr == 1) %>% 
   mutate(log10_rt = log10(multiplyRT)) %>%  # Log10 transformed the RT
   dplyr::select(participant, verbal_span_mean, visual_span_mean, medium_mult_RT, multiplyRT) %>% 
@@ -77,6 +66,7 @@ missing_task_df <- readr::read_csv("combined_mult_data.csv") %>%
 
 # Check the number of participants
 n_participants_task_df <- readr::read_csv("combined_mult_data.csv") %>% 
+  rename(visual_span_mean = mean_blocks) %>% 
   filter(multiplyCorr == 1) %>% 
   mutate(log10_rt = log10(multiplyRT)) %>%  # Log10 transformed the RT
   dplyr::select(participant, verbal_span_mean, visual_span_mean, medium_mult_RT, multiplyRT) %>% 
@@ -93,16 +83,16 @@ col_types_spec <- cols(
   participant = col_factor(),
   median_RT = col_double(),
   verbal_span_mean = col_double(),
-  visual_span_mean = col_double(),
+  mean_blocks = col_double(),
   interference_score = col_double(),
   multiplyRT = col_double(),
   multiplyCorr = col_double(),
   productType = col_factor(),
-  OperandType = col_factor(),
   problem = col_character()
 )
 
 combined_rt_df <- readr::read_csv("combined_mult_data.csv", col_types = col_types_spec) %>% 
+  rename(visual_span_mean = mean_blocks) %>% 
   # Filter out incorrect trials
   filter(multiplyCorr == 1) %>% 
   # Apply log10 transformation to reaction times
@@ -112,6 +102,7 @@ combined_rt_df <- readr::read_csv("combined_mult_data.csv", col_types = col_type
   mutate(problem_size = as.factor(problem_size))
 
 combined_acc_df <- readr::read_csv("combined_mult_data.csv", col_types = col_types_spec) %>% 
+  rename(visual_span_mean = mean_blocks) %>% 
   # Apply log10 transformation to reaction times
   mutate(log10_rt = log10(multiplyRT)) %>% 
   # Apply effect coding/deviation coding
@@ -124,7 +115,7 @@ combined_acc_df <- readr::read_csv("combined_mult_data.csv", col_types = col_typ
 
 # Centering and standardize the predictors for verbal and visual span means
 
-```{r}
+```{r centering_data}
 
 # using datawizard package, datawizard::standardize()
 
@@ -272,7 +263,7 @@ VarCorr(rs_1g)
 ```
 
 
-# Compare the three random slope models
+# Compare the four random slope models
 ```{r}
 
 performance::compare_performance(rs_1d, rs_1e, rs_1f, rank = TRUE)
@@ -302,7 +293,7 @@ tidy(best_optimizer, conf.int = TRUE) |>
 
 ```{r}
 
-m_0 <- lmer(log10_rt ~ typing_RT_z  +
+m_0 <- lmer(log10_rt ~ typing_RT_z  + 
                (problem_size + interference_score_z | participant) + 
                 (1 | problem), 
              data = combined_rt_centered,
@@ -403,12 +394,27 @@ anova(m_4a, type = "III") # Type III tests
 performance::model_performance(m_4a)
 ```
 
-# Model 5 - interactions
+## Comparing model likelihood
+
+```{r}
+
+anova(m_0, m_1a)
+anova(m_1a, m_2a)
+anova(m_2a, m_3a)
+anova(m_3a, m_4a)
+```
+
+
+
+
+## Two-way interactions models
+
+### Model 5: problem size and verbal span
 
 ```{r}
 # Fit the model
-m_5a <- lmer(log10_rt ~ typing_RT_z + problem_size * interference_score_z *
-               verbal_span_z * visual_span_z +
+m_5a <- lmer(log10_rt ~ typing_RT_z  + interference_score_z +
+                visual_span_z + problem_size * verbal_span_z + 
                (problem_size + interference_score_z | participant) + 
                 (1 | problem), 
              data = combined_rt_centered,
@@ -426,48 +432,674 @@ anova(m_5a, type = "III") # Type III tests
 performance::model_performance(m_5a)
 ```
 
+### Model 6: problem size * visual span
 
 ```{r}
-anova(m_5a, type = "II")
+
+# Fit the model
+m_6a <- lmer(log10_rt ~ typing_RT_z  + interference_score_z +
+                verbal_span_z + problem_size * visual_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+
+# Summary and hypothesis tests for the model
+model6_summary = summary(m_6a)
+model6_summary
+anova(m_6a, type = "III") # Type III tests
+
+performance::model_performance(m_6a)
+
+## Post-hoc
+
+# Create a data frame with the four scenarios
+scenarios <- data.frame(
+  problem_size = c(-1, -1, 1, 1),
+  visual_span_z = c(1, -1, 1, -1)
+)
+
+# Use ggpredict to obtain predicted values for the scenarios
+predictions <- ggpredict(m_6a, scenarios)
+plot(predictions)
+
+# Create a summary data frame for connecting the lines
+summary_data <- predictions %>%
+  group_by(x) %>%
+  arrange(x, group) %>%
+  mutate(visual_span_z = factor(group))
+
+# Create the interaction plot with connected lines
+interaction_visual_problem <- ggplot(data = summary_data, aes(x = factor(x), y = predicted, color = group)) +
+  geom_line(aes(group = group), size = 1) +
+  labs(
+    x = "Problem Size",
+    y = "Predicted log10 RT",
+    title = "Predicted log10 RT by Visual Span and Problem Size"
+  ) + 
+  scale_color_discrete(labels = c("Low Visual Span", "High Visual Span")) +
+  theme_classic()
+
+print(interaction_visual_problem)
+plot(predictions)
+
+
+# Save the plot as a high-resolution image
+ggsave("interaction_visual_problem.png", plot = interaction_visual_problem, width = 8, height = 6, dpi = 600)
+
+
+```
+
+## Emtrends
+
+```{r}
+# use small as basline
+combined_rt_centered$problem_size <- relevel(combined_rt_centered$problem_size, ref = "-1")
+
+emtrends(m_6a, ~ problem_size, var = "visual_span_z")
+
+# test difference in slopes
+emtrends(m_6a, pairwise ~ problem_size, var = "visual_span_z")
+```
+
+
+```{r}
+emm_options(pbkrtest.limit = 15000)
+
+verbal_ar <- round(mean(combined_rt_centered$verbal_span_z) + sd(combined_rt_centered$verbal_span_z), 1)
+verbal_br <- round(mean(combined_rt_centered$verbal_span_z) - sd(combined_rt_centered$verbal_span_z), 1)
+
+verbal_list <- list(verbal = c(verbal_ar, verbal_br))
+
+# get the estimates
+emtrends(m_7a, ~ interference_score_z, var = "verbal_span_z", at = verbal_list)
+
+# statistical test for slope difference
+emtrends(
+    m_7a,
+    pairwise ~ interference_score_z,
+    var = "verbal_span_z",
+    at = verbal_list,
+    adjust = "none"
+)
+```
+
+
+### interference * verbal span
+
+```{r}
+# Fit the model
+m_7a <- lmer(log10_rt ~ typing_RT_z  + problem_size +
+                visual_span_z + interference_score_z * verbal_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+
+# Summary and hypothesis tests for the model
+model7_summary = summary(m_7a)
+model7_summary
+anova(m_7a, type = "III") # Type III tests
+
+performance::model_performance(m_7a)
+
+## Post hoc analysis
+# Load the 'ggeffects' package if you haven't already
+library(ggeffects)
+
+# Create a data frame with the combinations you want to predict
+combinations <- expand.grid(
+  interference_score_z = c(-1, 1, -1, 1),
+  verbal_span_z = c(-1, -1, 1, 1)
+)
+
+# Use ggpredict to get predicted values
+predictions <- ggpredict(m_7a, combinations)
+
+
+
+# Plot the predicted values
+library(ggplot2)
+interaction_verbal <- plot(predictions) +
+  labs(
+    x = "Interference (z-score)",
+    y = "Predicted log10 RT",
+    title = "Predicted log10 RT by Verbal Span and Interference"
+  ) + theme_classic() +
+  scale_x_continuous(
+  breaks = c(-1, 1),
+  labels = c("Low", "High") 
+) + 
+  scale_color_discrete(labels = c("Low", "High"))
+
+print(interaction_verbal)
+plot(predictions)
+
+# Save the plot as a high-quality PNG file
+ggsave("interaction_plot.png", plot = interaction_verbal, width = 8, height = 6, dpi = 600)
+
 ```
 
 
 ```{r}
 
-# Obtain the coefficient estimates
-coef_estimates <- fixef(m_1a) # Fixed-effects coefficients
-# Apply the exp() function to convert to exp values
-exp_estimates <- exp(coef_estimates)
-exp_estimates
+emm_options(pbkrtest.limit = 50000)
+library(emmeans)
+
+# Calculate marginal trends (reductions in slopes) for m_6a
+emtrends_m6a <- emtrends(m_6a, ~ visual_span_z | problem_size)
+grafify::posthoc_Trends_Levelwise(Model = m_6a, 
+Fixed_Factor = "problem_size", 
+Trend_Factor = "visual_span_z")
+
+visreg(combined_rt_centered, xvar = "interference_score_z",
+       by = "verbal_span_z", overlay=TRUE,
+       breaks = c(-1, 1),
+       partial = FALSE, rug = FALSE)
+
+
 
 ```
 
-
 ```{r}
-print(summary(m_5a,ddf="Satterthwaite"),correlation=FALSE)
+visual_int <- emtrends(m_6a, var = factor(problem_size),
+                at = list(visual_span_z = c(-2, 2)),
+                lmer.df = "satterthwaite")
+
+summary(visual_int, infer=TRUE)
+
+verbal_int <- emtrends(m_6a, var = "interference_score_z",
+                at = list(verbal_span_z = c(-1, 1)),
+                lmer.df = "satterthwaite")
+
+summary(verbal_int, infer=TRUE)
 ```
 
-## Compare model 4 and 5
+
+
+### interference * visual span
 
 ```{r}
+m_8a <- lmer(log10_rt ~ typing_RT_z  + problem_size +
+                verbal_span_z + interference_score_z * visual_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+
+# Summary and hypothesis tests for the model
+model8_summary = summary(m_8a)
+model8_summary
+anova(m_8a, type = "III") # Type III tests
+
+performance::model_performance(m_8a)
+```
+
+## All two-way interactions
+## Including ONLY the significant two-level interactions.
+
+```{r}
+m_9a <- lmer(log10_rt ~ typing_RT_z  + 
+                interference_score_z * verbal_span_z +
+                problem_size * visual_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+
+# Summary and hypothesis tests for the model
+model9_summary = summary(m_9a)
+model9_summary
+anova(m_9a, type = "III") # Type III tests
+
+performance::model_performance(m_9a)
+
+library(sjPlot)
+tab_model(m_6a, m_7a, m_9a, p.val = "kr", show.df = TRUE)
+```
+
+```{r}
+
+library("visreg")
+library("JWileymisc")
+
+egltable("verbal_span_z", data = combined_rt_centered[!duplicated(participant)])
+quantile(combined_rt_centered[!duplicated(participant), verbal_span_z], na.rm = TRUE)
+
+visreg(combined_rt_centered, xvar = "interference_score_z",
+       by = "verbal_span_z", overlay=TRUE,
+       breaks = c(-2, 2),
+       partial = FALSE, rug = FALSE)
+
+visreg(combined_rt_centered, xvar = "interference_score_z",
+       by = "verbal_span_z", overlay=TRUE,
+       breaks = c(-3, 3),
+       partial = FALSE, rug = FALSE)
+```
+
+
+## All two-way interactions
+
+```{r}
+m_10a <- lmer(log10_rt ~ typing_RT_z  + 
+                problem_size * verbal_span_z + 
+                interference_score_z * verbal_span_z +
+                problem_size * visual_span_z + 
+                interference_score_z * visual_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+
+# Summary and hypothesis tests for the model
+model10_summary = summary(m_10a)
+model10_summary
+anova(m_10a, type = "III") # Type III tests
+
+performance::model_performance(m_10a)
+anova(m_9a, m_10a)
+```
+
+## All fit of model
+
+```{r}
+compare_performance(m_0, m_1a, m_2a, m_3a, m_4a, m_5a, m_6a, m_7a, m_8a, m_9a, m_10a)
+compare_performance(m_0b, m_1b, m_2b, m_3b, m_4b, m_5b, m_6b, m_7b, m_8b, m_9b)
+compare_performance(m_0, m_1a, m_2a, m_3a, m_4a, m_5a, m_6a, m_7a, m_8a, m_9a, m_10a, rank = TRUE)
+```
+
+
+## Compare all models
+
+```{r}
+# Model 0 vs model 1
+anova(m_0, m_1a)
+
+# Model 1 vs model 2
 anova(m_1a, m_2a)
+
+# Model 2 vs model 3
 anova(m_2a, m_3a)
+
+# Model 3 vs model 4
 anova(m_3a, m_4a)
+## Note. Model 4 is not better than model 3.
 
-anova(m_4a, m_5a)
+
+### ------------------------------ Interactions model --------------------------------------------
+# Model 3 vs model 5
 anova(m_3a, m_5a)
 
-anova(m_1a, m_5a)
-anova(m_2a, m_5a)
-anova(m_3a, m_5a)
-anova(m_4a, m_5a)
+# Model 3 vs model 6
+anova(m_3a, m_6a)
+
+# Model 3 vs. model 7
+anova(m_3a, m_7a)
+
+# Model 3 vs. model 8
+anova(m_3a, m_8a)
+
+## Combination of interactions
+anova(m_6a, m_9a)
+anova(m_7a, m_9a)
+
 
 ```
+
+
+
+
+
+
+## Model comparison
+
+```{r}
+anova(m_4a, m_5a)
+anova(m_4a, m_6a)
+anova(m_4a, m_7a)
+anova(m_4a, m_8a)
+
+
+anova(m_4a, m_9a)
+anova(m_4a, m_10a)
+
+anova(m_6a, m_9a)
+anova(m_7a, m_9a)
+
+anova(m_9a, m_10a)
+```
+
+
+### Additional analysis - including correct responses
+
+```{r}
+m_11a <- lmer(log10_rt ~ typing_RT_z  + 
+                problem_size * interference_score_z * verbal_span_z * visual_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+summary(m_11a)
+
+anova(m_9a, m_11a)
+
+compare_performance(m_9a, m_11a)
+```
+
+
+## -----------------------------------------------------------------------
+## Baseline
+
+```{r}
+
+# Fit the model
+m_0b <- lmer(log10_rt ~ typing_RT_z + multiplyCorr  +
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_acc_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+# Summary and hypothesis tests for the model
+summary(m_0b)
+anova(m_0b, type = "III") # Type III tests
+performance::model_performance(m_0b)
+```
+
+
+## Model 1 (problem features - size -1 is small, 1 is large)
+## Model 1b  (problem size)
+
+```{r}
+# Fit the model
+m_1b <- lmer(log10_rt ~ typing_RT_z + multiplyCorr + problem_size  +
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_acc_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+# Summary and hypothesis tests for the model
+summary(m_1b)
+anova(m_1b, type = "III") # Type III tests
+performance::model_performance(m_1b)
+```
+
+
+## Model 2 (problem features - interference)
+## Model 2a with interference score
+
+```{r}
+# Fit the model
+m_2b <- lmer(log10_rt ~ typing_RT_z + multiplyCorr + problem_size + interference_score_z +
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_acc_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+# Summary and hypothesis tests for the model
+summary(m_2b)
+anova(m_2b, type = "III") # Type III tests
+
+performance::model_performance(m_2b)
+```
+
+
+# Model 3 (Verbal STM)
+## Verbal Span Mean
+
+```{r}
+# Fit the model
+m_3b <- lmer(log10_rt ~ typing_RT_z + multiplyCorr + problem_size + interference_score_z +
+               verbal_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_acc_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+# Summary and hypothesis tests for the model
+summary(m_3b)
+anova(m_3b, type = "III") # Type III tests
+
+performance::model_performance(m_3b)
+```
+
+# Model 4 (Visual STM)
+## Model 4b (visual_span_mean)
+
+```{r}
+# Fit the model
+m_4b <- lmer(log10_rt ~ typing_RT_z + multiplyCorr + problem_size + interference_score_z +
+               verbal_span_z + visual_span_z +
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_acc_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+# Summary and hypothesis tests for the model
+summary(m_4b)
+anova(m_4b, type = "III") # Type III tests
+
+performance::model_performance(m_4b)
+```
+```{r}
+# Fit the model
+m_5b <- lmer(log10_rt ~ typing_RT_z  + multiplyCorr + interference_score_z +
+                visual_span_z + problem_size * verbal_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_acc_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+
+# Summary and hypothesis tests for the model
+summary(m_5b)
+anova(m_5b, type = "III") # Type III tests
+
+performance::model_performance(m_5b)
+```
+
+### Model 6: problem size * visual span
+
+```{r}
+
+# Fit the model
+m_6b <- lmer(log10_rt ~ typing_RT_z  + multiplyCorr + interference_score_z +
+                verbal_span_z + problem_size * visual_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_acc_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+
+# Summary and hypothesis tests for the model
+summary(m_6b)
+anova(m_6b, type = "III") # Type III tests
+
+performance::model_performance(m_6b)
+```
+
+### interference * verbal span
+
+```{r}
+# Fit the model
+m_7b <- lmer(log10_rt ~ typing_RT_z  + multiplyCorr + problem_size +
+                visual_span_z + interference_score_z * verbal_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_acc_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+
+# Summary and hypothesis tests for the model
+summary(m_7b)
+anova(m_7b, type = "III") # Type III tests
+
+performance::model_performance(m_7b)
+```
+
+### interference * visual span
+
+```{r}
+m_8b <- lmer(log10_rt ~ typing_RT_z  + multiplyCorr + problem_size +
+                verbal_span_z + interference_score_z * visual_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_acc_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+
+# Summary and hypothesis tests for the model
+summary(m_8b)
+anova(m_8b, type = "III") # Type III tests
+
+performance::model_performance(m_8b)
+```
+
+```{r}
+m_9b <- lmer(log10_rt ~ typing_RT_z  + multiplyCorr +
+                interference_score_z * verbal_span_z +
+                problem_size * visual_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_acc_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+
+# Summary and hypothesis tests for the model
+summary(m_9b)
+anova(m_9b, type = "III") # Type III tests
+
+performance::model_performance(m_9b)
+```
+
+
+
+### -----------------------------------------------------------------
+# Simple slope analysis
+
+```{r}
+
+m_9a <- lmer(log10_rt ~ typing_RT_z  + 
+                interference_score_z * verbal_span_z +
+                problem_size * visual_span_z + 
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+
+
+
+# Summary and hypothesis tests for the model
+model9_summary = summary(m_9a)
+model9_summary
+anova(m_9a, type = "III") # Type III tests
+
+performance::model_performance(m_9a)
+
+
+# Summary and hypothesis tests for the model
+model9_summary = summary(m_9a)
+model9_summary
+anova(m_9a, type = "III") # Type III tests
+
+performance::model_performance(m_9a)
+```
+
 
 
 ```{r}
 library(sjPlot)
-tab_model(m_1a, m_2a, m_3a, m_4a, m_5a)
+tab_model(m_0, m_1a, m_2a, m_3a, m_4a, m_5a, m_6a, m_7a, m_8a, m_9a, m_10a)
+```
+
+
+
+```{r}
+
+library(ggplot2)
+
+# Create an interaction plot
+ggplot(data = combined_rt_centered, aes(x = verbal_span_z, y = interference_score_z, color = factor(problem_size))) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Interaction Plot of Verbal Span and Interference by Problem Size",
+       x = "Verbal Span (Z-score)",
+       y = "Interference Score (Z-score)",
+       color = "Problem Size") +
+  scale_color_manual(values = c("red", "blue"))  # Set color palette
+
+
+# Create scatterplot with regression lines
+ggplot(data = combined_rt_centered, aes(x = interference_score_z, y = log10_rt, color = verbal_span_z)) +
+  geom_point() +  # Add scatterplot points
+  geom_smooth(method = "lm", se = FALSE) +  # Add regression lines
+  labs(title = "Scatterplot of Log RT vs. Interference Score by Verbal Span",
+       x = "Interference Score (Z-score)",
+       y = "Log RT") +
+  scale_color_gradient(low = "blue", high = "red") 
+
+
+
+# Interaction plot
+ggplot(data = combined_rt_centered, aes(x = interference_score_z, y = log10_rt, color = verbal_span_z)) +
+  geom_point(aes(group = productType)) +
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(title = "Interaction Plot of Log RT by Interference Score and Verbal Span",
+       x = "Interference Score (Z-score)",
+       y = "Log RT") +
+  scale_color_gradient(low = "blue", high = "red") +
+  facet_wrap(~ productType, ncol = 2)  # Separate plots by problem_size1 levels
+
+
 ```
 
 
@@ -475,35 +1107,51 @@ tab_model(m_1a, m_2a, m_3a, m_4a, m_5a)
 ### Interactions between interference and verbal span
 
 ```{r}
-# Example predictor values
-interference_values <- c(-2, -1, 0, 1, 2)
-verbal_span_values <- c(-2, -1, 0, 1, 2)
-visual_span_values <- c(-2, -1, 0, 1, 2)
 
-# Create a data frame with combinations of predictor values
-predictors_df <- expand.grid(
-  interference_score_z = interference_values,
-  verbal_span_z = verbal_span_values,
-  visual_span_z = visual_span_values,
-  problem_size = c(-1, 1)  # Example problem_size values
+library(emmeans)
+emm_options(lmer.df = "asymptotic")
+
+## Setting verbal span as predictor, interference as moderator
+inter_ar <- round(mean(combined_rt_centered$interference_score_z) + sd(combined_rt_centered$interference_score_z), 1)
+inter_br <- round(mean(combined_rt_centered$interference_score_z) - sd(combined_rt_centered$interference_score_z), 1)
+## Setting interference as predictor, verbal span as moderator
+verbal_ar <- round(mean(combined_rt_centered$verbal_span_z) + sd(combined_rt_centered$verbal_span_z), 1)
+verbal_br <- round(mean(combined_rt_centered$verbal_span_z) - sd(combined_rt_centered$verbal_span_z), 1)
+
+
+## Specify the list of points (lower, middle, upper)
+inter_list <- list(interference = c(inter_br, inter_ar))
+verbal_list <- list(verbal = c(verbal_br, verbal_ar))
+
+
+# simplified models
+inter_verbal <- lmer(log10_rt ~ typing_RT_z + interference_score_z * verbal_span_z  +
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+  
+## get the estimates
+# For the interaction between verbal_span_z and interference_score_z
+emm_v_i <- emmeans(m_9a, ~ verbal_span_z | interference_score_z, 
+                   at = verbal_list, 
+                   pbkrtest.limit = 13010, 
+                   lmerTest.limit = 13010)
+
+# For the interaction between interference_score_z and verbal_span_z
+emm_i_v <- emmeans(m_5a, ~ interference_score_z | verbal_span_z, 
+                   at = inter_list, 
+                   pbkrtest.limit = 13010, 
+                   lmerTest.limit = 13010)
+
+
+emtrends(ph_inter_verbal, ~ interference_score_z, var = "verbal_span_z", 
+         at = mylist, 
+         pbkrtest.limit = 13010,  # Increase the limit for pbkrtest
+    lmerTest.limit = 13010   # Increase the limit for lmerTest
 )
-
-# Set the constant value for typing_RT_z
-constant_typing_RT_z <- 0  # You can set it to any constant value you prefer
-
-# Include 'typing_RT_z' in 'predictors_df' with the constant value
-predictors_df$typing_RT_z <- constant_typing_RT_z
-
-# Convert potential factors to numeric
-predictors_df$interference_score_z <- as.numeric(predictors_df$interference_score_z)
-predictors_df$verbal_span_z <- as.numeric(predictors_df$verbal_span_z)
-predictors_df$visual_span_z <- as.numeric(predictors_df$visual_span_z)
-predictors_df$problem_size <- as.numeric(predictors_df$problem_size)
-
-# Prediction
-predictions <- predict(m_5a, newdata = predictors_df, re.form = ~0)
-
-
 
 ```
 
@@ -513,36 +1161,66 @@ predictions <- predict(m_5a, newdata = predictors_df, re.form = ~0)
 # Question: Is there a difference in the relationship of verbal STM on RT for different values of interference score? (comparing simple slopes)
 
 ```{r}
+# Calculate EMMs for verbal_span_z by problem_size
+emms_problem_size <- emmeans(m_5a, ~ verbal_span_z | problem_size, 
+                             pbkrtest.limit = 13010, 
+                             lmerTest.limit = 13010)
+
+# View the EMMs
+summary(emms_problem_size)
+
+# Perform pairwise comparisons
+comparisons <- contrast(emms_problem_size, method = "pairwise")
+
+# View the comparisons, including p-values
+summary(comparisons)
+
+```
+
+
+
+```{r}
 library(emmeans)
 
-
-```
-```{r}
-library(ggplot2)
-
-ggplot(data = combined_rt_centered, aes(x = interference_score, y = log10_rt, color = factor(verbal_span_mean))) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE, aes(group = verbal_span_mean), formula = y ~ x) +
-  labs(x = "Interference Score", y = "Log10_RT", color = "Verbal Span Mean") +
-  facet_wrap(~verbal_span_mean, scales = "free") +
-  theme_minimal()
+# plot
+mylist = list(interference_score_z = seq(-1, 1, 0.5),
+              verbal_span_z = c(verbalbr, verbalr, verbalar))
+emmip(ph_inter_verbal, verbal_span_z ~ interference_score_z, at = mylist, CIs = TRUE)
 
 ```
 
+### Interactions between problem size and visual span
 
 ```{r}
-library(ggplot2)
+emm_options(lmerTest.limit = 13010)
 
+library(emmeans)
 
-ggplot(data = combined_rt_centered, aes(x = interference_score, y = log10_rt, color = verbal_span_mean, group = factor(verbal_span_mean))) +
-  geom_point(position = position_jitter(width = 0.1, height = 0), size = 1) +
-  geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
-  labs(x = "Interference Score", y = "Log10_RT", color = "Verbal Span Mean") +
-  scale_color_gradient(low = "lightblue", high = "blue") +
-  theme_minimal()
+ph_size_visual <- lmer(log10_rt ~ typing_RT_z + problem_size * visual_span_z  +
+               (problem_size + interference_score_z | participant) + 
+                (1 | problem), 
+             data = combined_rt_centered,
+             REML = FALSE,
+             control=lmerControl(optimizer="bobyqa", 
+                                 optCtrl=list(maxfun=10000)))
+  
+## get the estimates
+emtrends(ph_size_visual, ~ problem_size, var = "visual_span_z",
+                  pbkrtest.limit = 13010, lmerTest.limit = 13010)# Increase the limit
 
+# test difference in slopes
+emtrends(ph_size_visual, pairwise ~ problem_size, var = "visual_span_z")
 
+# plot
+(mylist <- list(
+    visual_span_z = seq(-3, 4, by = 0.5),
+    problem_size = c("small", "large")
+))
+
+emmip(ph_size_visual, problem_size ~ interference_score_z, at = mylist, CIs = TRUE)
 ```
+
+
 
 ```{r}
 ggplot(data = combined_rt_centered, aes(x = visual_span_mean, y = log10_rt, color = factor(productType))) +

@@ -15,7 +15,7 @@ participant_details <- read_csv("demographics_raw_data/raw/participant_details_p
 ```
 
 
-```{r}
+```{r message=FALSE}
 library(lubridate)
 
 data <- read_csv("demographics_raw_data/raw/stm_demo_part1.csv") %>%

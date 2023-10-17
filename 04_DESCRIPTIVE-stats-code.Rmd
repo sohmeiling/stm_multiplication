@@ -5,7 +5,7 @@ date: "2023-08-16"
 ---
 
 # Import libraries
-```{r}
+```{r message=FALSE}
 library(tidyverse)
 library(janitor)
 
@@ -31,63 +31,14 @@ demo_df <- read_csv("consolidated_data/combined_demo_data.csv", col_types = cols
   dob = col_date(format = "%Y-%m-%d")  
 ))
 
-
-mult_df <- readr::read_csv("consolidated_data/cleaned_mult-summary.csv", col_types = cols(
-  participant = col_character(),  # Set 'participant' as character type
-  n = col_double(),
-  mean_mult_RT = col_double(),
-  medium_mult_RT = col_double(),
-  perc_accuracy_mult = col_double()
-))
-
-
-vpt_df <- readr::read_csv("consolidated_data/cleaned_vpt_data.csv", col_types = cols(
-  participant = col_character()  # Set 'participant' as character type
-)) %>% 
-  select(-max_vpt_span)  # Remove the 'max_vpt_span' column
-
-digit_df <- readr::read_csv("consolidated_data/cleaned_digit-span-combined_data.csv", col_types = cols(
-  participant = col_character(),  # Set 'participant' as character type
-  max_span = col_double(),
-  digitspan_type = col_character()
-))
-
-typing_df <- readr::read_csv("consolidated_data/cleaned_typing_data.csv", col_types = cols(
-  participant = col_character(),  # Set 'participant' as character type
-  num_correct_trials = col_double(),
-  mean_RT = col_double(),
-  median_RT = col_double(),
-  perc_accuracy = col_double()
-))
-
-
 ```
 
-
-## Digit span tasks combined
+## All Tasks combined
 
 ```{r}
 
 # Combine data frames using left_join
-combined_df <- demo_df %>% 
-  left_join(typing_df,  by = "participant") %>%
-  left_join(digit_df, by = "participant") %>%
-  left_join(vpt_df, by = "participant") %>% 
-  left_join(mult_df, by = "participant") %>% 
-  filter(!is.na(median_RT))
-
-combined_df <- combined_df %>%
-  filter(!is.na(max_span)) %>% 
-  pivot_wider(
-    names_from = digitspan_type,  # Creates separate columns for each unique value in digitspan_type
-    values_from = max_span,  # Specifies the values to be placed in the new columns
-    names_prefix = "max_span_"  # Prefix for the new column names
-  ) %>% 
-  filter(!is.na(max_span_WAIS)) %>% 
- filter(!is.na(max_span_Egner))
-
-combined_df <- combined_df %>%
-  mutate(mean_digitspan = (max_span_WAIS + max_span_Egner)/2)
+combined_df <- read_csv("combined_tasks.csv")
 
 
 ```
@@ -98,14 +49,14 @@ combined_df <- combined_df %>%
 ```{r}
 ## Correlation for two digit span tasks
 # Convert to numeric
-combined_df$max_span_WAIS <- as.numeric(combined_df$max_span_WAIS)
-combined_df$max_span_Egner <- as.numeric(combined_df$max_span_Egner)
+combined_df$verbal_span_wais <- as.numeric(combined_df$verbal_span_wais)
+combined_df$verbal_span_egner <- as.numeric(combined_df$verbal_span_egner)
 
 # Calculate the correlation coefficient and remove missing values
-correlation <- cor(combined_df$max_span_WAIS, combined_df$max_span_Egner, use = "pairwise.complete.obs")
+correlation <- cor(combined_df$verbal_span_wais, combined_df$verbal_span_egner, use = "pairwise.complete.obs")
 
 # Calculate the p-value for the correlation
-correlation_test <- cor.test(combined_df$max_span_WAIS, combined_df$max_span_Egner, method = "pearson")
+correlation_test <- cor.test(combined_df$verbal_span_wais, combined_df$verbal_span_egner, method = "pearson")
 
 # Extract the p-value from the test result
 p_value <- correlation_test$p.value
@@ -115,6 +66,15 @@ print(p_value)
 
 # Print or view the correlation coefficient
 print(correlation)
+
+
+```
+
+
+# Demographics of participants
+
+```{r}
+## WRONG CODES HERE
 
 # Final participants in the digit span task
 final_participants <- combined_df %>%
@@ -129,12 +89,6 @@ combined_df <- demo_df %>%
 
 final_participants <- combined_df %>%
   distinct(participant)
-```
-
-
-# Demographics of participants
-
-```{r}
 
 summary_df <-final_participants %>% 
   
@@ -144,313 +98,31 @@ summary_df <-final_participants %>%
 
 ## Combine date frames
 
+
 ```{r}
 
 interference_score <- readr::read_csv("consolidated_data/stim_inteference_score.csv")
-
-
-```
-
-
-```{r}
 # add an interference column to mult_df
-mult_df <- mult_df %>% 
+
+mult_df <- readr::read_csv("consolidated_data/cleaned_mult-acc_data.csv") %>% 
   left_join(interference_score, by = "problem") 
 
-
-# Save the combined data frame to a CSV file
-write_csv(combined_df, "combined_data.csv")
-
 # Read the CSV file and assign it to combined_rt_df
-missing_task_df <- readr::read_csv("combined_data.csv") %>% 
+missing_task_df <- mult_df %>% 
   filter(multiplyCorr == 1) %>% 
   mutate(log10_rt = log10(multiplyRT)) %>%  # Log10 transformed the RT
   group_by(participant) %>%
   summarize_all(~ sum(is.na(.))) %>% 
   filter_at(vars(-participant), any_vars(. != 0))
 
-# Missing task data - participants 685, 749, 783, 947, 971, 979, 987 were excluded
-excluded_participants <- missing_task_df$participant
-
-# Load df
-combined_df <- read_csv("combined_data.csv") %>% 
-  # Exclude participants with missing task data
-  filter(!(participant %in% excluded_participants)) %>% 
-  # Apply log10 transformation to reaction times
-  mutate(log10_rt = log10(multiplyRT))
-
-combined_rt_df <- readr::read_csv("combined_data.csv") %>% 
+combined_rt_df <- mult_df %>% 
   # Filter out incorrect trials
   filter(multiplyCorr == 1) %>% 
-  # Exclude participants with missing task data
-  filter(!(participant %in% excluded_participants)) %>% 
   # Apply log10 transformation to reaction times
   mutate(log10_rt = log10(multiplyRT))
 
-# digit span df
-digit_df <- digit_df %>% 
-  filter(!(participant %in% excluded_participants)) 
 
-# VPT df
-vpt_df <- vpt_df %>% 
-  filter(!(participant %in% excluded_participants)) 
-
-# typing df
-typing_df <- typing_df %>% 
-  filter(!(participant %in% excluded_participants)) 
-
-```
-
-# Descriptive for digit span task
-```{r}
-
-# Calculate summary statistics using dplyr
-summary_stats <- digit_df %>%
-  summarise(
-    mean_max_digitspan = mean(max_digitspan),
-    median_max_digitspan = median(max_digitspan),
-    sd_max_digitspan = sd(max_digitspan)
-  )
-
-# Calculate skewness and kurtosis using the psych package
-skewness_value <- skew(digit_df$max_digitspan)
-kurtosis_value <- kurtosi(digit_df$max_digitspan)
-
-# Create a dataframe for summary statistics
-digitspan_summary <- data.frame(
-  mean = summary_stats$mean_max_digitspan,
-  median = summary_stats$median_max_digitspan,
-  sd = summary_stats$sd_max_digitspan,
-  skewness = skewness_value,
-  kurtosis = kurtosis_value
-)
-```
-
-# Descriptive for vpt
-```{r}
-
-# Calculate summary statistics using dplyr
-summary_stats <- vpt_df %>%
-  summarise(
-    mean_mean_blocks = mean(mean_blocks),
-    median_mean_blocks = median(mean_blocks),
-    sd_mean_blocks = sd(mean_blocks)
-  )
-
-# Calculate skewness and kurtosis using the psych package
-skewness_value <- skew(vpt_df$mean_blocks)
-kurtosis_value <- kurtosi(vpt_df$mean_blocks)
-
-# Create a dataframe for summary statistics
-vpt_summary <- data.frame(
-  mean = summary_stats$mean_mean_blocks,
-  median = summary_stats$median_mean_blocks,
-  sd = summary_stats$sd_mean_blocks,
-  skewness = skewness_value,
-  kurtosis = kurtosis_value
-)
-```
-
-# Descriptive for typing
-```{r}
-
-# Calculate summary statistics for median_RT using dplyr
-median_rt_summary <- typing_df %>%
-  summarise(
-    mean_median_RT = mean(median_RT),
-    median_median_RT = median(median_RT),
-    sd_median_RT = sd(median_RT)
-  )
-
-# Calculate skewness and kurtosis for median_RT using the psych package
-skewness_median_rt <- skew(typing_df$median_RT)
-kurtosis_median_rt <- kurtosi(typing_df$median_RT)
-
-# Create a dataframe for median_RT summary statistics
-median_rt_summary_df <- data.frame(
-  mean = median_rt_summary$mean_median_RT,
-  median = median_rt_summary$median_median_RT,
-  sd = median_rt_summary$sd_median_RT,
-  skewness = skewness_median_rt,
-  kurtosis = kurtosis_median_rt
-)
-
-```
-
-# Multiplication production task
-```{r}
-
-# Calculate summary statistics for multiplication production task using dplyr
-combined_acc_summary <- combined_df %>%
-  group_by(participant) %>%
-  summarise(
-    mean_multiplyCorr = mean(multiplyCorr),
-    median_multiplyCorr = median(multiplyCorr),
-    sd_multiplyCorr = sd(multiplyCorr)
-  ) %>%
-  ungroup()
-
-# Calculate grand mean of the summary statistics
-grand_mean_acc <- combined_acc_summary %>%
-  summarise(
-    grand_mean_mean = mean(mean_multiplyCorr),
-    grand_mean_median = mean(median_multiplyCorr),
-    grand_mean_sd = mean(sd_multiplyCorr)
-  )
-
-# Calculate skewness and kurtosis using the psych package for grand mean
-skewness_value_acc <- skew(combined_acc_summary$mean_multiplyCorr)
-kurtosis_value_acc <- kurtosi(combined_acc_summary$mean_multiplyCorr)
-
-# Create a dataframe for summary statistics
-multiplication_acc_summary <- data.frame(
-  mean = grand_mean_acc$grand_mean_mean,
-  median = grand_mean_acc$grand_mean_median,
-  sd = grand_mean_acc$grand_mean_sd,
-  skewness = skewness_value_acc,
-  kurtosis = kurtosis_value_acc
-)
-
-# -------------------------------------
-
-# Calculate summary statistics for multiplication production task using dplyr
-combined_rt_summary <- combined_rt_df %>%
-  group_by(participant) %>%
-  summarise(
-    mean_multiplyRT = mean(multiplyRT),
-    median_multiplyRT = median(multiplyRT),
-    sd_multiplyRT = sd(multiplyRT)
-  ) %>%
-  ungroup()
-
-# Calculate grand mean of the summary statistics
-grand_mean_rt <- combined_rt_summary %>%
-  summarise(
-    grand_mean_mean = mean(mean_multiplyRT),
-    grand_mean_median = mean(median_multiplyRT),
-    grand_mean_sd = mean(sd_multiplyRT)
-  )
-
-# Calculate skewness and kurtosis using the psych package for grand mean
-skewness_value_rt <- skew(combined_rt_summary$mean_multiplyRT)
-kurtosis_value_rt <- kurtosi(combined_rt_summary$mean_multiplyRT)
-
-# Create a dataframe for summary statistics
-multiplication_rt_summary <- data.frame(
-  mean = grand_mean_rt$grand_mean_mean,
-  median = grand_mean_rt$grand_mean_median,
-  sd = grand_mean_rt$grand_mean_sd,
-  skewness = skewness_value_rt,
-  kurtosis = kurtosis_value_rt
-)
-```
-
-
-# Descriptive statistics
-
-```{r}
-# Add a task column to each summary dataframe
-median_rt_summary_df <- median_rt_summary_df %>% mutate(task = "typing")
-vpt_summary <- vpt_summary %>% mutate(task = "vpt")
-digitspan_summary <- digitspan_summary %>% mutate(task = "digit span")
-multiplication_acc_summary <- multiplication_acc_summary %>% mutate(task = "multiplication - acc")
-multiplication_rt_summary <- multiplication_rt_summary %>% mutate(task = "multiplication - rt")
-
-# Combine the three dataframes using bind_rows
-final_summary <- bind_rows(
-  digitspan_summary,
-  vpt_summary,
-  median_rt_summary_df,
-  multiplication_acc_summary,
-  multiplication_rt_summary
-  )
-
-# Export the summary dataframe to a CSV file
-write.csv(final_summary, "descriptive_summary.csv", row.names = FALSE)
-```
-
-
-## Correlation between digit span, vpt, typing, and multiplication task
-
-```{r}
-
-# Extract relevant columns for each task
-digit_span_data <- digit_df %>%
-  dplyr::select(participant, max_digitspan)
-
-typing_data <- typing_df %>%
-  dplyr::select(participant, median_RT)
-
-vpt_data <- vpt_df %>%
-  dplyr::select(participant, mean_blocks)
-
-
-# ---------------------------------------------------------
-# Calculate summary statistics for multiplication production task using dplyr
-combined_acc_summary <- combined_df %>%
-  group_by(participant) %>%
-  summarise(
-    mean_multiplyCorr = mean(multiplyCorr),
-    median_multiplyCorr = median(multiplyCorr),
-    sd_multiplyCorr = sd(multiplyCorr)
-  ) %>%
-  ungroup()
-
-# Calculate summary statistics for multiplication production task using dplyr
-combined_rt_summary <- combined_rt_df %>%
-  group_by(participant) %>%
-  summarise(
-    mean_multiplyRT = mean(multiplyRT),
-    median_multiplyRT = median(multiplyRT),
-    sd_multiplyRT = sd(multiplyRT)
-  ) %>%
-  ungroup()
-
-multiplication_rt_data <- combined_rt_summary %>%
-  dplyr::select(participant, median_multiplyRT)
-
-multiplication_acc_data <- combined_acc_summary %>%
-  dplyr::select(participant, mean_multiplyCorr)
-
-# Combine the data to form a single df
-all_corr_data <- full_join(
-  digit_span_data,
-  typing_data,
-  by = "participant"
-) %>%
-  full_join(vpt_data, by = "participant") %>%
-  full_join(multiplication_rt_data, by = "participant") %>%
-  full_join(multiplication_acc_data, by = "participant")
-
-```
-
-# Correlation table
-```{r}
-library(corrr)
-
-# Calculate the correlation matrix
-correlation_matrix <- all_corr_data %>%
-  dplyr::select(-participant) %>%
-  correlate()
-
-# Extract the correlation matrix as a data frame
-correlation_df <- correlation_matrix %>%
-  shave() %>%
-  as.data.frame()
-
-# Calculate the p-values using cor_pmat
-p_value_matrix <- correlation_matrix %>%
-  shave() %>%
-  cor_pmat() %>%
-  as.data.frame()
-
-# Correlation matrix
 
 ```
 
 
-
-
-## Multiplication production task
-
-### 

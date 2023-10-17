@@ -9,6 +9,7 @@ date: "2023-08-16"
 ## Typing task
 
 - Remove all the fast (<0.25s) and slow (> 5s) trials
+- Retains only those with accuracy above 50%
 
 ```{r}
 library(tidyverse)
@@ -24,7 +25,8 @@ typing_df <- read_csv("consolidated_data/consolidated_typing_data.csv",
   summarize(median_RT = median(typingRT),
             mean_RT = mean(typingRT),
             num_correct_trials = sum(answerCorr == 1, na.rm = TRUE),
-            perc_accuracy = num_correct_trials / 28 * 100) 
+            perc_accuracy = num_correct_trials / 28 * 100) %>% 
+  filter(perc_accuracy >=50)
 ```
 
 
@@ -35,6 +37,8 @@ write_csv(typing_df, "consolidated_data/cleaned_typing_data.csv")
 ```
 
 ## Multiplication production task
+
+Within the multiplication production task, we first excluded trials with RTs below 250 milliseconds and exceeding 10,000 milliseconds during the data cleaning phase. To ensure the robustness of our results, we further conducted a sensitivity analysis by re-running the models, including extreme RT values. The results of this analysis were compared to those obtained from the models with exclusions. Importantly, the sensitivity analysis confirmed that the observed patterns of findings remained consistent across both sets of models, indicating that the exclusions did not unduly influence our conclusions. Nevertheless, we retained only those responses above 0.25 seconds and below 60 seconds (1 minute) in the final dataset. This decision was based on the consideration that extremely long reaction times, such as outliers exceeding 60 seconds, could potentially introduce noise and deviate significantly from the expected range of response times in a multiplication production task. Secondly, we also applied a log10 transformation to address the positively skewed distribution of reaction time data. 
 
 ```{r}
 # Define column types based on the message
@@ -51,28 +55,30 @@ col_types <- cols(
 
 mult_ACC <- read_csv("consolidated_data/consolidated_mult_data.csv", 
                     col_types = col_types) %>% 
-  filter(multiplyRT <= 10) %>% # remove extreme RT
-  filter(multiplyRT >= 0.25) 
+  dplyr::filter(multiplyRT <= 60) %>% # remove extreme RT
+  dplyr::filter(multiplyRT >= 0.25) %>% 
+  dplyr::filter(OperandType != 'tie')
 
 mult_RT <- read_csv("consolidated_data/consolidated_mult_data.csv", 
                     col_types = col_types) %>% 
-  filter(multiplyCorr == 1) %>% 
-  filter(multiplyRT <= 10) %>% # remove extreme RT
-  filter(multiplyRT >= 0.25) 
-
+  dplyr::filter(multiplyCorr == 1) %>% 
+  dplyr::filter(multiplyRT <= 60) %>% # remove extreme RT
+  dplyr::filter(multiplyRT >= 0.25) %>% 
+  dplyr::filter(OperandType != 'tie')
+  
 # Calculate the trials for each participant
 n_trials_mult <- mult_ACC %>% 
   group_by(participant) %>% 
-  summarize(n = n()) 
+  dplyr::summarize(n = n()) 
 
 rt_extreme <- mult_ACC %>% 
-  filter(multiplyRT <= 10) %>% 
-  filter(multiplyRT >= 0.25)
+  dplyr::filter(multiplyRT <= 60) %>% 
+  dplyr::filter(multiplyRT >= 0.25)
 
 stats_accuracy <- mult_ACC %>% 
-  filter(multiplyCorr == 1) %>% 
+  dplyr::filter(multiplyCorr == 1) %>% 
   group_by(participant) %>% 
-  summarize(n = n(),
+  dplyr::summarize(n = n(),
             mean_mult_RT = mean(multiplyRT),
             medium_mult_RT = median(multiplyRT),
             perc_accuracy_mult = n()/60*100) 
@@ -91,17 +97,17 @@ write_csv(mult_RT, "consolidated_data/cleaned_mult-RT_data.csv")
 ## Digit span task
 
 ```{r}
-col_types <- cols(
+
+
+egner_span_df <- read_csv("consolidated_data/consolidated_digit-span-egner_data.csv", 
+                    col_types = cols(
   digitSpan = col_character(),
   digits_audio = col_character(),
   EgnerDSrt = col_double(),
   EgnerDSscore = col_double(),
   group = col_character(),
   participant = col_character()
-)
-
-egner_span_df <- read_csv("consolidated_data/consolidated_digit-span-egner_data.csv", 
-                    col_types = col_types) %>% 
+)) %>% 
   filter(EgnerDSscore == 1) %>% 
   filter(!is.na(digitSpan)) %>% 
   group_by(participant) %>%
@@ -117,17 +123,16 @@ write_csv(egner_span_df, "consolidated_data/cleaned_digit-span-egner_data.csv")
 
 
 ```{r}
-col_types <- cols(
+
+wais_span_df <- read_csv("consolidated_data/consolidated_digit-span-wais_data.csv", 
+                    col_types = cols(
   digitSpanWAIS = col_character(),
   WAISDSresponse = col_character(),
   WAISDSrt = col_double(),
   WAISDSscore = col_double(),
   group = col_character(),
   participant = col_character()
-)
-
-wais_span_df <- read_csv("consolidated_data/consolidated_digit-span-wais_data.csv", 
-                    col_types = col_types) %>% 
+)) %>% 
   filter(WAISDSscore == 1) %>% 
   filter(!is.na(digitSpanWAIS)) %>% 
   group_by(participant) %>%
@@ -180,15 +185,15 @@ write_csv(combined_ds, "consolidated_data/cleaned_digit-span-combined_wide_data.
 ## Visual Pattern task
 
 ```{r}
-col_types <- cols(
+
+vpt_df <- read_csv("consolidated_data/consolidated_vpt_data.csv", 
+                    col_types = cols(
   vptCorrect = col_character(),
   noOfBlocks = col_character(),
   group = col_character(),
   participant = col_character()
 )
-
-vpt_df <- read_csv("consolidated_data/consolidated_vpt_data.csv", 
-                    col_types = col_types) %>% 
+) %>% 
   filter(vptCorrect == "TRUE") %>%
   group_by(participant) %>%
   slice_tail(n = 3) %>% 
@@ -196,7 +201,12 @@ vpt_df <- read_csv("consolidated_data/consolidated_vpt_data.csv",
 
 # Highest block span (two out of three correct trials in each block)
 vpt_max <- read_csv("consolidated_data/consolidated_vpt_data.csv", 
-                   col_types = col_types) %>%
+                   col_types = cols(
+  vptCorrect = col_character(),
+  noOfBlocks = col_character(),
+  group = col_character(),
+  participant = col_character()
+)) %>%
   filter(vptCorrect == "TRUE") %>%
   group_by(participant, noOfBlocks) %>%
   filter(sum(vptCorrect == "TRUE") >= 2) %>%
@@ -230,24 +240,23 @@ demo_df <- read_csv("consolidated_data/combined_demo_data.csv") %>%
 ```
 
 ## Task dataset for all participants
+# Combined dataset
 
-```{r}
+```{r message=FALSE}
 
 typing_df <- read_csv("consolidated_data/cleaned_typing_data.csv")
 mult_summary_df <- read_csv("consolidated_data/cleaned_mult-summary.csv")
 verbal_stm_df <- read_csv("consolidated_data/cleaned_digit-span-combined_wide_data.csv") 
 visual_stm_df <- read_csv("consolidated_data/cleaned_vpt_data.csv") 
 
-```
-
-# Combined dataset
-
-```{r}
 combined_tasks <- typing_df %>% 
   inner_join(verbal_stm_df, by = 'participant') %>% 
   inner_join(visual_stm_df, by = 'participant') %>% 
   inner_join(mult_summary_df, by = 'participant') %>% 
   filter(!is.na(verbal_span_mean))
+
+# save the combined data
+write_csv(combined_tasks, "combined_tasks.csv") 
 
 # Check for missing/NA cells in the entire data frame
 any_missing <- any(is.na(combined_tasks))
@@ -258,14 +267,18 @@ participants_with_missing <- combined_tasks %>%
   summarise(has_missing = any(is.na(.)))
 ```
 
-
-```{r}
-# save the combined data
-write_csv(combined_tasks, "combined_tasks.csv") 
-```
 Removing na in typing task reduces the n of participant from 240 -236
 removing na in verbal span task (digit span) reduces the participant from 236 to 232.
 
-Final sample is 232 (removed 8 participants for incomplete tasks)
+Final sample is 230 (removed 8 participants for incomplete tasks, removed two more for low-performance in typing task)
+
+Note for exclusion.
+Participant 987 did not complete verbal - digit span task
+participant 809 did not complete verbal - digit span task
+
+Removing na in typing task reduces the n of participant from 240 -236
+removing na in verbal span task (digit span) reduces the participant from 236 to 231.
+
+Final sample is 231 (removed 9 participants for incomplete tasks)
 
 

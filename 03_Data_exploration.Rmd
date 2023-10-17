@@ -6,7 +6,7 @@ date: "2023-09-19"
 
 ## Demographics data for participants
 
-```{r}
+```{r message=FALSE}
 
 # Demographics
 library(tidyverse)
@@ -16,51 +16,30 @@ demo_df <- read_csv("consolidated_data/combined_demo_data.csv") %>%
     "Right" = "Right-handed",
     "Left-handed" = "Left-handed",
     "Left" = "Left-handed"
-  ))
+  )) %>% 
+  dplyr::select(participant, age)
 
-
+# Task performance (main)
+library(pastecs)
+# Behavioral Tasks
+combined_df <- read_csv("combined_tasks.csv")
+descriptive_table <- stat.desc(combined_df, norm = TRUE)
+write_csv(descriptive_table, "EDA_output/task_performance_metrics_full.csv")
 
 # Behavioral Tasks
-typing_df <- read_csv("consolidated_data/cleaned_typing_data.csv")
-mult_summary_df <- read_csv("consolidated_data/cleaned_mult-summary.csv")
-verbal_stm_df <- read_csv("consolidated_data/cleaned_digit-span-combined_wide_data.csv") %>% 
-  dplyr::select(participant, verbal_span_mean)
-visual_stm_df <- read_csv("consolidated_data/cleaned_vpt_data.csv") 
+combined_df <- read_csv("combined_tasks.csv") %>% 
+  dplyr::select(participant, median_RT, perc_accuracy, 
+                verbal_span_mean, mean_blocks,
+                medium_mult_RT, perc_accuracy_mult) 
 
+descriptive_table <- stat.desc(combined_df, norm = TRUE)
+write_csv(descriptive_table, "EDA_output/task_performance_metrics_selected.csv")
 ```
 
 
-# Combined all the tasks together in a single dataset
+
 
 ```{r}
-combined_df <- typing_df %>% 
-  left_join(verbal_stm_df, by = 'participant') %>% 
-  left_join(visual_stm_df, by = 'participant') %>% 
-  left_join(mult_summary_df, by = 'participant') %>% 
-  filter(!is.na(median_RT)) %>% # filter the NA in typing task
-  filter(!is.na(mean_blocks)) %>% 
-  filter(!is.na(mean_mult_RT)) %>% 
-  filter(!is.na(verbal_span_mean)) 
-
-#write_csv(combined_df, "combined_data.csv")
-
-# Filter participants in combined_df that are also in combined_tasks
-combined_df <- combined_df %>%
-  filter(participant %in% combined_tasks$participant)
-
-```
-
-Note for exclusion.
-Participant 987 did not complete verbal - digit span task
-participant 809 did not complete verbal - digit span task
-
-Removing na in typing task reduces the n of participant from 240 -236
-removing na in verbal span task (digit span) reduces the participant from 236 to 231.
-
-Final sample is 231 (removed 9 participants for incomplete tasks)
-
-```{r}
-  
 # Final count now is 
 nrow(combined_df)
 ```
@@ -92,79 +71,8 @@ cat("The final sample consisted of", total_participants, "young Malaysians (",
 
 ```
 
-# Task performance (main)
-```{r}
-library(pastecs)
-
-descriptive_table <- stat.desc(combined_df, norm = TRUE)
-
-write_csv(descriptive_table, "EDA_output/task_performance_metrics.csv")
-
-```
-
-
-# Rate Correct Score (RCS)
-
-Reaction times and accuracy were used to calculate the rate-correct score (RCS) (Woltz and Was, 2006), a measure of efficiency. RCS is calculated by the number of correct trials divided by the sum of reaction time for correct and incorrect trials, providing thus a measure that combines accuracy and reaction times. The value of RCS indicates the number of correct trials per second, where a higher value of RCS denotes higher efficiency. RCS has been shown to be more efficient in effect detection and accounting for a larger proportion of the variance compared to other integrative measures of speed and accuracy (Vandierendonck, 2017).
-
-```{r}
-
-```
 
 
 
-## RCS for typing task
-
-```{r}
-
-```
-
-## RCS for multiplication task
-
-```{r}
-
-```
-
-# Correlation
-
-```{r}
-
-combined_corr_df <- combined_df %>% 
-  dplyr::select(age,
-    median_RT, mean_RT,
-    num_correct_trials, perc_accuracy,
-    verbal_span_mean, mean_blocks,
-    medium_mult_RT, mean_mult_RT,
-    perc_accuracy_mult
-  )
-```
-
-## Correlation matrix
-
-```{r}
-library("Hmisc")
-library("corrplot")
-
-# Impute missing values in the "age" column with the mean
-combined_corr_df$age[is.na(combined_corr_df$age)] <- mean(combined_corr_df$age, na.rm = TRUE)
-
-# Calculate correlation coefficients and p-values
-mydata.rcorr <- rcorr(as.matrix(combined_corr_df))
-
-# Extract coefficient matrix and p-value matrix
-correlation_matrix <- mydata.rcorr$r
-p_value_matrix <- mydata.rcorr$P
-
-# Calculate correlation coefficients
-correlation_matrix <- cor(as.matrix(combined_corr_df), method = "spearman")
-
-# Save the correlation matrix to a CSV file
-write.csv(correlation_matrix, "EDA_output/correlation_matrix.csv")
-
-# Save the p-value matrix to a CSV file
-write.csv(p_value_matrix, "EDA_output/p_value_matrix.csv")
-
-
-```
 
 

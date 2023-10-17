@@ -1,0 +1,81 @@
+---
+title: "Result"
+author: "MeiLing"
+format: html
+toc: true
+toc-title: Contents
+editor: visual
+---
+
+## Overview
+
+This document contains analysis of reaction time (RT) and accuracy data from the experiment on short-term memory and single-digit multiplication tasks. The analysis is performed using the `lme` and `glmer` functionality in the `lme4` package. Post hoc tests are conducted using `emmeans` package (Lenth, 2017). After a brief description of the data set and research question, the code and results are presented.
+
+## Description of Experiment and Data
+
+The data is a combination of either RT or accuracy data from the typing speed task, Digit Span, Visual Pattern Test, and single-digit multiplication tasks. The details for each task is listed:
+
+-   **Typing speed.** In the task, each participant typed single-digit or double-digits (28 trials) as fast as possible. We determined the median reaction time for all the correct trials. We only reported results for participants who had an accuracy rate of more than 50%. For each participant meeting this criterion, we reported a single median reaction time score.
+
+-   **Digit span.** In this task, participants were asked to recall a sequence of digits presented to them. We gathered data on participants' performance in terms of the longest sequence they could correctly recall. We used two different sets of stimuli in our study: one from the WAIS (Wechsler Adult Intelligence Scale) and the other generated online (Egner et al., 2016). Both sets of stimuli showed a strong correlation with each other. To get the longest digit span for each participant, we selected the highest score from each set of stimuli. Then, we calculated the average of these two longest digit spans for each participant.
+
+-   **Visual pattern test.** This task assessed participants' ability to recognize and reproduce visual patterns. We collected data on accuracy and response times. The mean of the last three correct trials was tabulated.
+
+-   **Single-digit multiplication.** Participants completed 60 multiplication problems involving single digits. We recorded data on accuracy and response times.
+
+### Participants
+
+A total of 232 participants completed all the tasks.
+
+### Design
+
+**Predictors**:
+
+-   We examined the impact of two problem features in single-digit multiplication problems: problem size (categorized as small or large) and problem interference (ranging from 0 to 25).
+
+-   We also considered several additional predictors for each participant, including the median typing speed, the average performance in the Digit Span task, and the mean score on the Visual Pattern Test.
+
+**Response Variable**:
+
+-   Our primary response variable was the logarithm (log) of reaction times (RTs) for correct trials. We found that the log transformation helped achieve an approximately normal distribution of the data.
+
+-   We also analyzed participants' accuracy (binary response: 0 or 1) in solving single-digit multiplication problems.
+
+By analyzing these predictors and the log-transformed RTs, we aimed to gain insights into how problem features and participants' cognitive abilities relate to their performance in single-digit multiplication tasks.
+
+## Data and R preparation
+
+We used libraries under `tidyverse` for data wrangling and data manipulation, `lme4` for mixed effect modelling and `emmeans` for posthoc analyzes. For plotting, we used `ggplot`, also from `tidyverse`.
+
+We started with loading the libraries and data set. After loading, we will start with descriptive statistics and assumption check.
+
+```{r libraries, message=FALSE}
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(emmeans)
+
+```
+
+```{r datasets, message=FALSE}
+
+combined_rt_centered
+
+```
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
